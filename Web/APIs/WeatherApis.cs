@@ -1,16 +1,26 @@
-﻿public static class WeatherApis
+﻿using Microsoft.AspNetCore.Mvc;
+using Web.Models;
+
+public static class WeatherApis
 {
     public static RouteGroupBuilder MapWeatherApi(this RouteGroupBuilder group)
     {
         group
             .MapGet("/hi/{id}", GetWeatherById.Invoke)
-            .WithDescription("HIHI")
-            .WithSummary("HISUMMARY")
-            .WithName("HINAME");
+            .WithDescription("With Description")
+            .WithSummary("With Summary")
+            .WithName("With Name");
 
         group
-            .MapGet("/bye", () => "SDF")
-            .WithName("foo");
+            .MapPost("/bye", ([FromBody] GetBye model) => model.WhoName)
+            .WithName("foo")
+            .WithOpenApi(operation =>
+            {
+                operation.Deprecated = true;
+                return operation;
+            });
+
+        group.WithOpenApi();
 
         return group;
     }
