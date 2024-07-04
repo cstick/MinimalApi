@@ -2,6 +2,9 @@
 
 namespace Web.APIs;
 
+/// <summary>
+/// Get a weather forecast and its ID.
+/// </summary>
 public class GetWeatherById
 {
     /// <summary>

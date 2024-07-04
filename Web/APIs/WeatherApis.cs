@@ -3,8 +3,14 @@ using Web.Models;
 
 namespace Web.APIs;
 
-public static class WeatherApis
+/// <summary>
+/// Maps weather APIs.
+/// </summary>
+internal static class WeatherApis
 {
+    /// <summary>
+    /// Maps the weather APIs to the provided group.
+    /// </summary>
     public static RouteGroupBuilder MapWeatherApi(this RouteGroupBuilder group)
     {
         group

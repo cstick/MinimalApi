@@ -4,7 +4,7 @@ using System.Text.Json;
 
 namespace Web.Health;
 
-public static class HealthResponse
+internal static class HealthResponse
 {
     public static Task Writer(HttpContext context, HealthReport healthReport)
     {
