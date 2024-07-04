@@ -2,7 +2,7 @@
 
 namespace Web.Health;
 
-public class ApiHealthCheck(IHttpClientFactory httpClientFactory) : IHealthCheck
+internal class ApiHealthCheck(IHttpClientFactory httpClientFactory) : IHealthCheck
 {
     private bool _isHealthy = false;
     private DateTime _lastHeartbeat = DateTime.MinValue.ToUniversalTime();

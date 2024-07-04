@@ -1,19 +1,26 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Web.Models;
 
+namespace Web.APIs;
+
 public static class WeatherApis
 {
     public static RouteGroupBuilder MapWeatherApi(this RouteGroupBuilder group)
     {
         group
-            .MapGet("/hi/{id}", GetWeatherById.Invoke)
+            .MapGet("{id}", GetWeatherById.Invoke)
             .WithDescription("With Description")
             .WithSummary("With Summary")
             .WithName("With Name");
 
         group
-            .MapPost("/bye", ([FromBody] GetBye model) => model.WhoName)
-            .WithName("foo")
+            .MapPost("/search", ([FromBody] WeatherSearchCriteria searchCriteria) => searchCriteria.Name)
+            .WithName("search")
+            .WithOpenApi();
+
+        group
+            .MapPost("/deprecated", ([FromBody] WeatherSearchCriteria searchCriteria) => searchCriteria.Name)
+            .WithName("deprecated")
             .WithOpenApi(operation =>
             {
                 operation.Deprecated = true;

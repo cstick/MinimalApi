@@ -1,11 +1,8 @@
 ﻿namespace Web.Health;
 
-public class StartupBackgroundService : BackgroundService
+internal class StartupBackgroundService(StartupHealthCheck healthCheck) : BackgroundService
 {
-    private readonly StartupHealthCheck _healthCheck;
-
-    public StartupBackgroundService(StartupHealthCheck healthCheck)
-        => _healthCheck = healthCheck;
+    private readonly StartupHealthCheck _healthCheck = healthCheck;
 
     protected override async Task ExecuteAsync(CancellationToken stoppingToken)
     {

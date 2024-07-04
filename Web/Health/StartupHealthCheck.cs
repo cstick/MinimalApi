@@ -2,7 +2,7 @@
 
 namespace Web.Health;
 
-public class StartupHealthCheck : IHealthCheck
+internal class StartupHealthCheck : IHealthCheck
 {
     private volatile bool _isStarted;
 
@@ -14,6 +14,11 @@ public class StartupHealthCheck : IHealthCheck
     public Task<HealthCheckResult> CheckHealthAsync(
         HealthCheckContext context, CancellationToken cancellationToken = default)
     {
+        if (cancellationToken.IsCancellationRequested)
+        {
+            return Task.FromResult(HealthCheckResult.Unhealthy("That startup task is cancelled."));
+        }
+
         if (_isStarted)
         {
             return Task.FromResult(HealthCheckResult.Healthy("The startup task has completed."));

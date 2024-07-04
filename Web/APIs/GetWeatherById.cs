@@ -1,15 +1,19 @@
-﻿using System.ComponentModel;
+﻿using Web.Models;
+
+namespace Web.APIs;
 
 public class GetWeatherById
 {
     /// <summary>
     /// Blah Blah
     /// </summary>
-    /// <param name="id"></param>
+    /// <param name="id">The weather forecast summary.</param>
     /// <returns></returns>
-    [Description("asdf")]
-    public static string Invoke(string id)
+    public static WeatherForecast Invoke(string id)
     {
-        return $"ID: {id}";
+        return new WeatherForecast
+        {
+            Summary = id,
+        };
     }
 }

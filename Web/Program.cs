@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.HttpLogging;
+using Web.APIs;
 using Web.Health;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -25,20 +26,15 @@ builder.Services
     .AddCheck<StartupHealthCheck>("Startup")
     .AddApiHealthCheck(
         "Cat Facts",
-        new Uri("https://cat-fact.herokuapp.com/facts"));
+        new Uri("https://cat-fact.herokuapp.com/facts"),
+        frequency: TimeSpan.FromSeconds(15),
+        tags: ["Cat", "Dog"]);
 
 builder.Services.AddHttpClient();
 
 var app = builder.Build();
 
 app.UseHttpLogging();
-
-// Configure the HTTP request pipeline.
-if (app.Environment.IsDevelopment())
-{
-    app.UseSwagger();
-    app.UseSwaggerUI();
-}
 
 app.UseHttpsRedirection();
 //app.UseExceptionHandler();
@@ -52,11 +48,18 @@ var weatherGroup = apiGroup
     .WithHttpLogging(HttpLoggingFields.All)
     .MapWeatherApi();
 
-app.MapHealthChecks("/health/live");
+app.MapHealthChecks("/health");
 
 app.MapHealthChecks("/health/ready", new()
 {
     ResponseWriter = HealthResponse.Writer
 });
+
+// Configure the HTTP request pipeline.
+if (app.Environment.IsDevelopment())
+{
+    app.UseSwagger();
+    app.UseSwaggerUI();
+}
 
 app.Run();

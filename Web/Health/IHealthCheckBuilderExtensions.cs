@@ -3,7 +3,7 @@ using Microsoft.Extensions.Diagnostics.HealthChecks;
 
 namespace Web.Health;
 
-public static class IHealthCheckBuilderExtensions
+internal static class IHealthCheckBuilderExtensions
 {
     private static readonly TimeSpan DefaultFrequency = TimeSpan.FromSeconds(15);
 

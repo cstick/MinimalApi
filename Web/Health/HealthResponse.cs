@@ -37,6 +37,19 @@ public static class HealthResponse
                 }
 
                 jsonWriter.WriteEndObject();
+
+                var tags = healthReportEntry.Value.Tags;
+
+                if (tags.Any())
+                {
+                    jsonWriter.WriteStartArray("tags");
+                    foreach (var tag in healthReportEntry.Value.Tags)
+                    {
+                        jsonWriter.WriteStringValue(tag);
+                    }
+                    jsonWriter.WriteEndArray();
+                }
+
                 jsonWriter.WriteEndObject();
             }
 
