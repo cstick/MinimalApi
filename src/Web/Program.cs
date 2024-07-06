@@ -32,7 +32,7 @@ builder.Services
         tags: ["Cat", "Dog"]);
 
 builder.Services.AddHttpClient();
-builder.Services.AddTransient<GetWeatherByIdHandler>();
+builder.Services.AddTransient<GetWeatherForecastHandler>();
 
 builder.Services.AddValidatorsFromAssemblyContaining<Program>();
 

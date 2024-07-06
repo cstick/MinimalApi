@@ -6,12 +6,12 @@ using Web.Models.Validators;
 
 namespace Web.Tests.Unit
 {
-    public class GetWeatherByIdTests
+    public class GetWeatherForecastHandlerTests
     {
-        private readonly IValidator<GetWeatherById> _validator = new GetWeatherByIdValidator();
-        private readonly GetWeatherByIdHandler sut;
+        private readonly IValidator<GetWeatherForecast> _validator = new GetWeatherForecastValidator();
+        private readonly GetWeatherForecastHandler sut;
 
-        public GetWeatherByIdTests()
+        public GetWeatherForecastHandlerTests()
         {
             sut = new(_validator);
         }
@@ -19,15 +19,18 @@ namespace Web.Tests.Unit
         [Fact]
         public void ReturnsOkayWithForecast()
         {
-            var request = new GetWeatherById
+            var request = new GetWeatherForecast
             {
                 Id = "asd",
             };
 
-            var result = sut.Invoke(request);
+            var response = sut.Invoke(request);
+
+            Assert.NotNull(response);
+
+            var result = response.Result as Ok<WeatherForecast>;
 
             Assert.NotNull(result);
-            Assert.IsType<Ok<WeatherForecast>>(result);
 
             var forecast = result.Value;
 
@@ -40,12 +43,14 @@ namespace Web.Tests.Unit
         [InlineData("")]
         public void ValidatesInput(string id)
         {
-            var request = new GetWeatherById
+            var request = new GetWeatherForecast
             {
                 Id = id,
             };
 
-            Assert.Throws<ValidationException>(() => sut.Invoke(request));
+            var result = sut.Invoke(request).Result as ValidationProblem;
+
+            Assert.NotNull(result);
         }
     }
 }

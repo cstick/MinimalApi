@@ -5,16 +5,16 @@ using Web.Models;
 namespace Web.APIs;
 
 /// <summary>
-/// Get a weather forecast and its ID.
+/// Handles a request for a weather forecast.
 /// </summary>
-public class GetWeatherByIdHandler(IValidator<GetWeatherById> validator)
+public class GetWeatherForecastHandler(IValidator<GetWeatherForecast> validator)
 {
     /// <summary>
-    /// Blah Blah
+    /// Gets a weather forecast based on the request.
     /// </summary>
     /// <param name="request">Parameters for finding the forecast.</param>
     /// <returns></returns>
-    public Results<Ok<WeatherForecast>, ValidationProblem> Invoke(GetWeatherById request)
+    public Results<Ok<WeatherForecast>, ValidationProblem> Invoke(GetWeatherForecast request)
     {
         var validation = validator.Validate(request);
 
