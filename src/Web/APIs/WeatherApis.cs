@@ -14,7 +14,15 @@ internal static class WeatherApis
     public static RouteGroupBuilder MapWeatherApi(this RouteGroupBuilder group)
     {
         group
-            .MapGet("{id}", GetWeatherById.Invoke)
+            .MapGet("{Id}", ([FromServices] GetWeatherByIdHandler handler, string id) =>
+            {
+                var request = new GetWeatherById
+                {
+                    Id = id,
+                };
+
+                return handler.Invoke(request);
+            })
             .WithDescription("With Description")
             .WithSummary("With Summary")
             .WithName("With Name");

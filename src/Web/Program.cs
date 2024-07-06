@@ -1,3 +1,4 @@
+using FluentValidation;
 using Microsoft.AspNetCore.HttpLogging;
 using Web.APIs;
 using Web.Health;
@@ -31,6 +32,9 @@ builder.Services
         tags: ["Cat", "Dog"]);
 
 builder.Services.AddHttpClient();
+builder.Services.AddTransient<GetWeatherByIdHandler>();
+
+builder.Services.AddValidatorsFromAssemblyContaining<Program>();
 
 var app = builder.Build();
 
