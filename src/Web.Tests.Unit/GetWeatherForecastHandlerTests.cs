@@ -41,7 +41,7 @@ namespace Web.Tests.Unit
         [Theory]
         [InlineData(null)]
         [InlineData("")]
-        public void ValidatesInput(string id)
+        public void ValidatesInput(string? id)
         {
             var request = new GetWeatherForecast
             {
