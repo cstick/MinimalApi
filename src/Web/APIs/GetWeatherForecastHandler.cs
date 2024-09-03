@@ -25,6 +25,8 @@ public class GetWeatherForecastHandler(IValidator<GetWeatherForecast> validator)
 
         return TypedResults.Ok(new WeatherForecast
         {
+            Id = Guid.NewGuid(),
+            Location = request.Id,
             Summary = request.Id,
         });
     }

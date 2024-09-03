@@ -6,6 +6,16 @@ namespace Web.Models;
 public class WeatherForecast
 {
     /// <summary>
+    /// The id of the forecast.
+    /// </summary>
+    public required Guid Id { get; set; } = Guid.NewGuid();
+
+    /// <summary>
+    /// The location of the forecast.
+    /// </summary>
+    public required string Location { get; set; }
+
+    /// <summary>
     /// The date of the forecast.
     /// </summary>
     public DateOnly Date { get; set; }

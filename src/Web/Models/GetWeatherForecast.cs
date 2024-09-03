@@ -8,5 +8,5 @@ public record GetWeatherForecast
     /// <summary>
     /// An id to be used as the summary.
     /// </summary>
-    public string? Id { get; set; } = string.Empty;
+    public string Id { get; set; } = string.Empty;
 }
