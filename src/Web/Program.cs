@@ -41,8 +41,7 @@ public class Program
                 tags: ["Cat", "Dog"]);
 
         builder.Services.AddHttpClient();
-        builder.Services.AddTransient<GetWeatherForecastHandler>();
-
+        builder.Services.AddMediatR(configuration => configuration.RegisterServicesFromAssemblyContaining<SearchWeatherHandler>());
         builder.Services.AddValidatorsFromAssemblyContaining<Program>();
 
         var app = builder.Build();

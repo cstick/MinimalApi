@@ -1,4 +1,5 @@
 ﻿using FluentValidation;
+using MediatR;
 using Microsoft.AspNetCore.Http.HttpResults;
 using Web.Models;
 
@@ -7,16 +8,12 @@ namespace Web.APIs;
 /// <summary>
 /// Handles a request for a weather forecast.
 /// </summary>
-public class GetWeatherForecastHandler(IValidator<GetWeatherForecast> validator)
+public class GetWeatherForecastHandler(IValidator<GetWeatherForecast> validator) : IRequestHandler<GetWeatherForecast, Results<Ok<WeatherForecast>, ValidationProblem>>
 {
-    /// <summary>
-    /// Gets a weather forecast based on the request.
-    /// </summary>
-    /// <param name="request">Parameters for finding the forecast.</param>
-    /// <returns></returns>
-    public Results<Ok<WeatherForecast>, ValidationProblem> Invoke(GetWeatherForecast request)
+    /// <inheritdoc/>
+    public async Task<Results<Ok<WeatherForecast>, ValidationProblem>> Handle(GetWeatherForecast request, CancellationToken cancellationToken)
     {
-        var validation = validator.Validate(request);
+        var validation = await validator.ValidateAsync(request, cancellationToken);
 
         if (!validation.IsValid)
         {

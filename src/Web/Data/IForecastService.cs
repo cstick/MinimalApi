@@ -20,7 +20,7 @@ namespace Web.Data
         /// <param name="id">The id of a forecast.</param>
         /// <returns>The <see cref="WeatherForecast"/> if found.</returns>
         WeatherForecast? Find(Guid id);
-        
+
         /// <summary>
         /// Search forecasts.
         /// </summary>

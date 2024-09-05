@@ -1,9 +1,12 @@
-﻿namespace Web.Models;
+﻿using MediatR;
+using Microsoft.AspNetCore.Http.HttpResults;
+
+namespace Web.Models;
 
 /// <summary>
 /// A request for a weather forecast.
 /// </summary>
-public record GetWeatherForecast
+public record GetWeatherForecast : IRequest<Results<Ok<WeatherForecast>, ValidationProblem>>
 {
     /// <summary>
     /// An id to be used as the summary.

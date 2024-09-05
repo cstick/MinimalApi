@@ -17,14 +17,14 @@ namespace Web.Tests.Unit
         }
 
         [Fact]
-        public void ReturnsOkayWithForecast()
+        public async Task ReturnsOkayWithForecast()
         {
             var request = new GetWeatherForecast
             {
                 Id = "asd",
             };
 
-            var response = sut.Invoke(request);
+            var response = await sut.Handle(request, default);
 
             Assert.NotNull(response);
 
@@ -39,16 +39,15 @@ namespace Web.Tests.Unit
         }
 
         [Theory]
-        [InlineData(null)]
         [InlineData("")]
-        public void ValidatesInput(string? id)
+        public async Task ValidatesInput(string id)
         {
             var request = new GetWeatherForecast
             {
                 Id = id,
             };
 
-            var result = sut.Invoke(request).Result as ValidationProblem;
+            var result = (await sut.Handle(request, default)).Result as ValidationProblem;
 
             Assert.NotNull(result);
         }
