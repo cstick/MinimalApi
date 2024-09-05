@@ -1,6 +1,6 @@
 using FluentValidation;
 using Microsoft.AspNetCore.Http.HttpResults;
-using Web.APIs;
+using Web.Handlers;
 using Web.Models;
 using Web.Models.Validators;
 
@@ -8,7 +8,7 @@ namespace Web.Tests.Unit
 {
     public class GetWeatherForecastHandlerTests
     {
-        private readonly IValidator<GetWeatherForecast> _validator = new GetWeatherForecastValidator();
+        private readonly IValidator<GetWeather> _validator = new GetWeatherForecastValidator();
         private readonly GetWeatherForecastHandler sut;
 
         public GetWeatherForecastHandlerTests()
@@ -19,7 +19,7 @@ namespace Web.Tests.Unit
         [Fact]
         public async Task ReturnsOkayWithForecast()
         {
-            var request = new GetWeatherForecast
+            var request = new GetWeather
             {
                 Id = "asd",
             };
@@ -42,7 +42,7 @@ namespace Web.Tests.Unit
         [InlineData("")]
         public async Task ValidatesInput(string id)
         {
-            var request = new GetWeatherForecast
+            var request = new GetWeather
             {
                 Id = id,
             };

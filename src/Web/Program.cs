@@ -1,6 +1,7 @@
 using FluentValidation;
 using Microsoft.AspNetCore.HttpLogging;
 using Web.APIs;
+using Web.Handlers;
 using Web.Health;
 
 namespace Web;

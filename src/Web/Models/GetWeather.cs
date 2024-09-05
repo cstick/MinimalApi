@@ -6,7 +6,7 @@ namespace Web.Models;
 /// <summary>
 /// A request for a weather forecast.
 /// </summary>
-public record GetWeatherForecast : IRequest<Results<Ok<WeatherForecast>, ValidationProblem>>
+public record GetWeather : IRequest<Results<Ok<WeatherForecast>, ValidationProblem>>
 {
     /// <summary>
     /// An id to be used as the summary.

@@ -17,7 +17,7 @@ internal static class WeatherApis
         group
             .MapGet("{Id}", ([FromServices] IMediator handler, string id, CancellationToken cancellationToken) =>
             {
-                var request = new GetWeatherForecast
+                var request = new GetWeather
                 {
                     Id = id,
                 };

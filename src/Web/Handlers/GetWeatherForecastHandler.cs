@@ -3,15 +3,15 @@ using MediatR;
 using Microsoft.AspNetCore.Http.HttpResults;
 using Web.Models;
 
-namespace Web.APIs;
+namespace Web.Handlers;
 
 /// <summary>
 /// Handles a request for a weather forecast.
 /// </summary>
-public class GetWeatherForecastHandler(IValidator<GetWeatherForecast> validator) : IRequestHandler<GetWeatherForecast, Results<Ok<WeatherForecast>, ValidationProblem>>
+public class GetWeatherForecastHandler(IValidator<GetWeather> validator) : IRequestHandler<GetWeather, Results<Ok<WeatherForecast>, ValidationProblem>>
 {
     /// <inheritdoc/>
-    public async Task<Results<Ok<WeatherForecast>, ValidationProblem>> Handle(GetWeatherForecast request, CancellationToken cancellationToken)
+    public async Task<Results<Ok<WeatherForecast>, ValidationProblem>> Handle(GetWeather request, CancellationToken cancellationToken)
     {
         var validation = await validator.ValidateAsync(request, cancellationToken);
 
