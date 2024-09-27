@@ -9,7 +9,9 @@ namespace Web.Handlers;
 public class SearchWeatherHandler : IRequestHandler<SearchWeather, IEnumerable<WeatherForecast>>
 {
     /// <inheritdoc/>
-    public Task<IEnumerable<WeatherForecast>> Handle(SearchWeather request, CancellationToken cancellationToken)
+    public Task<IEnumerable<WeatherForecast>> Handle(
+        SearchWeather request, 
+        CancellationToken cancellationToken)
     {
         var forecast = new WeatherForecast
         {

@@ -8,7 +8,7 @@ namespace Web.Handlers;
 /// <summary>
 /// Handles a request for a weather forecast.
 /// </summary>
-public class GetWeatherForecastHandler(IValidator<GetWeather> validator) : IRequestHandler<GetWeather, Results<Ok<WeatherForecast>, ValidationProblem>>
+public class GetWeatherHandler(IValidator<GetWeather> validator) : IRequestHandler<GetWeather, Results<Ok<WeatherForecast>, ValidationProblem>>
 {
     /// <inheritdoc/>
     public async Task<Results<Ok<WeatherForecast>, ValidationProblem>> Handle(GetWeather request, CancellationToken cancellationToken)

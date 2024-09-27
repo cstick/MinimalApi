@@ -96,7 +96,7 @@ public class Program
             ResponseWriter = HealthResponse.Writer
         });
 
-        // Configure the HTTP request pipeline.
+        // Swagger UI.
         if (app.Environment.IsDevelopment())
         {
             app.UseSwagger();

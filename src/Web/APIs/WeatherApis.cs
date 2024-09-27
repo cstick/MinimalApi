@@ -15,7 +15,11 @@ internal static class WeatherApis
     public static RouteGroupBuilder MapWeatherApi(this RouteGroupBuilder group)
     {
         group
-            .MapGet("{Id}", ([FromServices] IMediator handler, string id, CancellationToken cancellationToken) =>
+            .MapGet(
+                "{Id}",
+                ([FromServices] IMediator handler,
+                string id,
+                CancellationToken cancellationToken) =>
             {
                 var request = new GetWeather
                 {
@@ -29,9 +33,12 @@ internal static class WeatherApis
             .WithName("With Name");
 
         group
-            .MapPost("/search",
-            ([FromServices] IMediator handler, [FromBody] SearchWeather searchCriteria, CancellationToken cancellationToken) =>
-            handler.Send(searchCriteria, cancellationToken))
+            .MapPost(
+                "/search",
+                ([FromServices] IMediator handler,
+                [FromBody] SearchWeather searchCriteria,
+                CancellationToken cancellationToken) =>
+                handler.Send(searchCriteria, cancellationToken))
             .WithName("search")
             .WithOpenApi();
 

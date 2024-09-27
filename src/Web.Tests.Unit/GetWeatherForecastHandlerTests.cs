@@ -9,7 +9,7 @@ namespace Web.Tests.Unit
     public class GetWeatherForecastHandlerTests
     {
         private readonly IValidator<GetWeather> _validator = new GetWeatherForecastValidator();
-        private readonly GetWeatherForecastHandler sut;
+        private readonly GetWeatherHandler sut;
 
         public GetWeatherForecastHandlerTests()
         {
