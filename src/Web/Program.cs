@@ -1,5 +1,10 @@
 using FluentValidation;
+using MediatR;
+using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.HttpLogging;
+using Microsoft.Extensions.Options;
+using Microsoft.Extensions.Primitives;
+using System.Threading.RateLimiting;
 using Web.APIs;
 using Web.Handlers;
 using Web.Health;
@@ -15,7 +20,6 @@ public class Program
     {
         var builder = WebApplication.CreateBuilder(args);
 
-        // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
         builder.Services.AddEndpointsApiExplorer();
         builder.Services.AddSwaggerGen();
 
@@ -26,7 +30,6 @@ public class Program
 
         builder.Services.AddMemoryCache();
         builder.Logging.AddConsole();
-
 
         builder.Services.AddHostedService<StartupBackgroundService>();
         builder.Services.AddSingleton<StartupHealthCheck>();
@@ -45,6 +48,28 @@ public class Program
         builder.Services.AddMediatR(configuration => configuration.RegisterServicesFromAssemblyContaining<SearchWeatherHandler>());
         builder.Services.AddValidatorsFromAssemblyContaining<Program>();
 
+        var myOptions = new MyRateLimitOptions();
+        builder.Configuration.GetSection(MyRateLimitOptions.MyRateLimit).Bind(myOptions);
+        var defaultPolicyName = "default";
+
+        builder.Services.AddRateLimiter(limiterOptions =>
+        {
+            limiterOptions.RejectionStatusCode = StatusCodes.Status429TooManyRequests;
+            limiterOptions.AddPolicy(policyName: defaultPolicyName, partitioner: httpContext =>
+            {
+                return RateLimitPartition.GetTokenBucketLimiter("Anon", _ =>
+                    new TokenBucketRateLimiterOptions
+                    {
+                        TokenLimit = myOptions.TokenLimit,
+                        QueueProcessingOrder = QueueProcessingOrder.OldestFirst,
+                        QueueLimit = myOptions.QueueLimit,
+                        ReplenishmentPeriod = TimeSpan.FromSeconds(myOptions.ReplenishmentPeriod),
+                        TokensPerPeriod = myOptions.TokensPerPeriod,
+                        AutoReplenishment = true
+                    });
+            });
+        });
+
         var app = builder.Build();
 
         app.UseHttpLogging();
@@ -53,7 +78,10 @@ public class Program
         //app.UseExceptionHandler();
         //app.UseAuthorization();
 
-        var apiGroup = app.MapGroup("/api");
+        app.UseRateLimiter();
+        var apiGroup = app
+            .MapGroup("/api")
+            .RequireRateLimiting(defaultPolicyName);
 
         var weatherGroup = apiGroup
             .MapGroup("/weather")
