@@ -3,10 +3,10 @@
 /// <summary>
 /// Specifications of a battery.
 /// </summary>
-public interface IBatterySpecification
+public record BatterySpecification : IBatterySpecification
 {
     /// <summary>
     /// The nominal voltage of the battery.
     /// </summary>
-    public double Voltage { get; set; }
+    public required double Voltage { get; set; }
 }

@@ -1,11 +1,7 @@
 using FluentValidation;
-using MediatR;
-using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.HttpLogging;
-using Microsoft.Extensions.Options;
-using Microsoft.Extensions.Primitives;
 using System.Threading.RateLimiting;
-using Web.APIs;
+using Web.APIs.Groups;
 using Web.Data;
 using Web.Handlers;
 using Web.Health;
@@ -88,6 +84,8 @@ public class Program
 
         apiGroup
             .MapGroup("/batteries")
+            .WithTags("Batteries")
+            .WithHttpLogging(HttpLoggingFields.All)
             .MapBatteryApi();
 
         apiGroup
