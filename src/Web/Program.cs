@@ -6,6 +6,7 @@ using Microsoft.Extensions.Options;
 using Microsoft.Extensions.Primitives;
 using System.Threading.RateLimiting;
 using Web.APIs;
+using Web.Data;
 using Web.Handlers;
 using Web.Health;
 
@@ -70,6 +71,8 @@ public class Program
             });
         });
 
+        builder.Services.AddRepositories();
+
         var app = builder.Build();
 
         app.UseHttpLogging();
@@ -83,7 +86,11 @@ public class Program
             .MapGroup("/api")
             .RequireRateLimiting(defaultPolicyName);
 
-        var weatherGroup = apiGroup
+        apiGroup
+            .MapGroup("/batteries")
+            .MapBatteryApi();
+
+        apiGroup
             .MapGroup("/weather")
             .WithTags("Weather")
             .WithHttpLogging(HttpLoggingFields.All)
