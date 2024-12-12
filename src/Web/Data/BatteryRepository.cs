@@ -5,7 +5,7 @@ namespace Web.Data;
 /// <inheritdoc/>
 public class BatteryRepository : IBatteryRepository
 {
-    private static IEnumerable<Battery> _batteries;
+    private static IList<Battery> _batteries;
 
     static BatteryRepository()
     {
@@ -32,7 +32,14 @@ public class BatteryRepository : IBatteryRepository
             throw new InvalidOperationException("Battery already exists.");
         }
 
-        _batteries = _batteries.Concat([battery]);
+        _batteries.Add(battery);
+    }
+
+    /// <inheritdoc/>
+    public void Upsert(Battery battery)
+    {
+        Delete(battery.Name);
+        _batteries.Add(battery);
     }
 
     /// <inheritdoc/>
@@ -52,14 +59,14 @@ public class BatteryRepository : IBatteryRepository
             var found = _batteries.Where(b => b.Name.Contains(battery.Name, StringComparison.OrdinalIgnoreCase));
             results = results.Concat(found);
         }
-        if (!string.IsNullOrWhiteSpace(battery.ANSIName))
+        if (!string.IsNullOrWhiteSpace(battery.AnsiName))
         {
-            var found = _batteries.Where(b => b.ANSIName.Contains(battery.ANSIName, StringComparison.OrdinalIgnoreCase));
+            var found = _batteries.Where(b => b.AnsiName.Contains(battery.AnsiName, StringComparison.OrdinalIgnoreCase));
             results = results.Concat(found);
         }
-        if (!string.IsNullOrWhiteSpace(battery.IECName))
+        if (!string.IsNullOrWhiteSpace(battery.IecName))
         {
-            var found = _batteries.Where(b => b.IECName.Contains(battery.IECName, StringComparison.OrdinalIgnoreCase));
+            var found = _batteries.Where(b => b.IecName.Contains(battery.IecName, StringComparison.OrdinalIgnoreCase));
             results = results.Concat(found);
         }
         if (battery.Voltage > 0)
@@ -74,6 +81,11 @@ public class BatteryRepository : IBatteryRepository
     /// <inheritdoc/>
     public void Delete(string name)
     {
-        _batteries = _batteries.Where(b => string.Equals(b.Name, name, StringComparison.OrdinalIgnoreCase) is false);
+        var battery = _batteries.FirstOrDefault(b => string.Equals(b.Name, name, StringComparison.OrdinalIgnoreCase));
+
+        if (battery != null)
+        {
+            _batteries.Remove(battery);
+        }
     }
 }

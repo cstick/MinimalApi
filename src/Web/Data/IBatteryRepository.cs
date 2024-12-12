@@ -38,4 +38,9 @@ public interface IBatteryRepository
     /// </summary>
     /// <param name="name">The name of a battery.</param>
     void Delete(string name);
+
+    /// <summary>
+    /// Insert or update a battery.
+    /// </summary>
+    void Upsert(Battery battery);
 }

@@ -2,7 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Web.Models;
 
-namespace Web.APIs;
+namespace Web.APIs.Groups;
 
 /// <summary>
 /// Maps weather APIs.

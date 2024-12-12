@@ -3,20 +3,20 @@
 /// <summary>
 /// Uniquely identifies a battery.
 /// </summary>
-public interface IBatteryIdentity
+public record BatteryIdentity : IBatteryIdentity
 {
     /// <summary>
     /// The common name of the battery.
     /// </summary>
-    public string Name { get; set; }
+    public required string Name { get; set; }
 
     /// <summary>
     /// The IEC name of the battery.
     /// </summary>
-    public string IECName { get; set; }
+    public required string IecName { get; set; }
 
     /// <summary>
     /// The ANSI name of the battery.
     /// </summary>
-    public string ANSIName { get; set; }
+    public required string AnsiName { get; set; }
 }

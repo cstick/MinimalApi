@@ -10,7 +10,7 @@ public class SearchWeatherHandler : IRequestHandler<SearchWeather, IEnumerable<W
 {
     /// <inheritdoc/>
     public Task<IEnumerable<WeatherForecast>> Handle(
-        SearchWeather request, 
+        SearchWeather request,
         CancellationToken cancellationToken)
     {
         var forecast = new WeatherForecast

@@ -7,12 +7,12 @@ public record Battery : IBatteryIdentity, IBatterySpecification
 {
     /// <inheritdoc/>
     public required string Name { get; set; }
-    
+
     /// <inheritdoc/>
-    public required string IECName { get; set; }
-    
+    public string IecName { get; set; } = string.Empty;
+
     /// <inheritdoc/>
-    public required string ANSIName { get; set; }
+    public string AnsiName { get; set; } = string.Empty;
 
     /// <inheritdoc/>
     public double Voltage { get; set; }
