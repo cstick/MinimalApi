@@ -8,7 +8,7 @@ public class SearchBatteriesHandler(IBatteryRepository batteries) : IRequestHand
 {
     public async Task<IResult> Handle(BatteryCriteria request, CancellationToken cancellationToken)
     {
-        await Task.Delay(0, cancellationToken);
+        cancellationToken.ThrowIfCancellationRequested();
 
         var searchBattery = new Battery
         {
@@ -18,7 +18,7 @@ public class SearchBatteriesHandler(IBatteryRepository batteries) : IRequestHand
             Voltage = request.Voltage,
         };
 
-        var foundBatteries = batteries.Find(searchBattery);
+        var foundBatteries = await batteries.Find(searchBattery);
 
         return Results.Ok(foundBatteries);
     }

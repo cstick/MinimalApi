@@ -23,7 +23,7 @@ public class PutBatteryHandler(PutBatteryValidator validator, IBatteryRepository
             return Results.ValidationProblem(validation.ToDictionary());
         }
 
-        var battery = batteries.Get(request.Name);
+        var battery = await batteries.Get(request.Name, cancellationToken);
 
         if (battery is null)
         {
@@ -33,13 +33,13 @@ public class PutBatteryHandler(PutBatteryValidator validator, IBatteryRepository
                 Voltage = request.Specification.Voltage,
             };
 
-            batteries.AddBattery(battery);
+            await batteries.AddBattery(battery, cancellationToken);
 
             return Results.Created($"batteries/{battery.Name}", battery);
         }
 
         battery.Voltage = request.Specification.Voltage;
-        batteries.Upsert(battery);
+        await batteries.Upsert(battery, cancellationToken);
 
         return Results.Ok();
     }

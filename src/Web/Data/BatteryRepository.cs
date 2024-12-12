@@ -19,14 +19,20 @@ public class BatteryRepository : IBatteryRepository
     }
 
     /// <inheritdoc/>
-    public bool DoesBatteryExist(string name)
+    public async Task<bool> DoesBatteryExist(string name, CancellationToken cancellationToken)
     {
+        cancellationToken.ThrowIfCancellationRequested();
+        await Task.Delay(0, cancellationToken);
+
         return _batteries.Any(b => string.Equals(b.Name, name, StringComparison.OrdinalIgnoreCase));
     }
 
     /// <inheritdoc/>
-    public void AddBattery(Battery battery)
+    public async Task AddBattery(Battery battery, CancellationToken cancellationToken)
     {
+        cancellationToken.ThrowIfCancellationRequested();
+        await Task.Delay(0, cancellationToken);
+
         if (_batteries.Any(b => Equals(b.Name, battery.Name)))
         {
             throw new InvalidOperationException("Battery already exists.");
@@ -36,22 +42,30 @@ public class BatteryRepository : IBatteryRepository
     }
 
     /// <inheritdoc/>
-    public void Upsert(Battery battery)
+    public async Task Upsert(Battery battery, CancellationToken cancellationToken)
     {
-        Delete(battery.Name);
+        cancellationToken.ThrowIfCancellationRequested();
+
+        await Delete(battery.Name, cancellationToken);
         _batteries.Add(battery);
     }
 
     /// <inheritdoc/>
-    public Battery? Get(string name)
+    public async Task<Battery?> Get(string name, CancellationToken cancellationToken)
     {
+        cancellationToken.ThrowIfCancellationRequested();
+        await Task.Delay(0, cancellationToken);
+
         return _batteries
             .FirstOrDefault(b => string.Equals(name, b.Name, StringComparison.OrdinalIgnoreCase));
     }
 
     /// <inheritdoc/>
-    public IEnumerable<Battery> Find(Battery battery)
+    public async Task<IEnumerable<Battery>> Find(Battery battery, CancellationToken cancellationToken)
     {
+        cancellationToken.ThrowIfCancellationRequested();
+        await Task.Delay(0, cancellationToken);
+
         var results = Enumerable.Empty<Battery>();
 
         if (!string.IsNullOrWhiteSpace(battery.Name))
@@ -79,8 +93,11 @@ public class BatteryRepository : IBatteryRepository
     }
 
     /// <inheritdoc/>
-    public void Delete(string name)
+    public async Task Delete(string name, CancellationToken cancellationToken)
     {
+        cancellationToken.ThrowIfCancellationRequested();
+        await Task.Delay(0, cancellationToken);
+
         var battery = _batteries.FirstOrDefault(b => string.Equals(b.Name, name, StringComparison.OrdinalIgnoreCase));
 
         if (battery != null)

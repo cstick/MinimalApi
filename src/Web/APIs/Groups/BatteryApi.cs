@@ -7,47 +7,38 @@ namespace Web.APIs.Groups;
 
 internal static class BatteryApi
 {
-    public static Task<RouteGroupBuilder> MapBatteryApi(this RouteGroupBuilder group)
+    public static async Task<RouteGroupBuilder> MapBatteryApi(this RouteGroupBuilder group)
     {
         group
-            .MapPost("/", (
-                [FromServices] IBatteryRepository batteries,
-                Battery battery) => CreateBattery.Handle(batteries, battery))
+            .MapPost(
+                "/",
+                Task<IResult> (IMediator mediator, Battery battery, CancellationToken cancellationToken) => mediator.Send(new CreateBatteryRequest(battery), cancellationToken))
             .WithSummary("Add")
             .WithDescription("Add a battery.");
 
         group.MapPut(
             "/{name}",
-            (IMediator mediator, string name, BatterySpecification specification, CancellationToken cancellationToken) =>
-            {
-                var request = new PutBattery
-                {
-                    Name = name,
-                    Specification = specification,
-                };
-
-                return mediator.Send(request, cancellationToken);
-            });
+            Task<IResult> (IMediator mediator, string name, BatterySpecification specification, CancellationToken cancellationToken) => mediator.Send(new PutBattery { Name = name, Specification = specification, }, cancellationToken));
 
         group.MapGet(
             "/{name}",
-            ([FromServices] IMediator mediator, string name, CancellationToken token) => mediator.Send(new GetBatteryByNameRequest { Name = name }, token));
+            Task<IResult> (IMediator mediator, string name, CancellationToken token) => mediator.Send(new GetBatteryByNameRequest { Name = name }, token));
 
         group.MapPost(
             "/search",
-            ([FromServices] IMediator mediator, BatteryCriteria criteria, CancellationToken token) => mediator.Send(criteria, token));
+            Task<IResult> (IMediator mediator, BatteryCriteria criteria, CancellationToken token) => mediator.Send(criteria, token));
 
-        group.MapDelete("/{name}", (
-            string name,
-            [FromServices] IBatteryRepository batteries) =>
-        {
-            batteries.Delete(name);
+        group.MapDelete(
+            "/{name}",
+            IResult (string name, [FromServices] IBatteryRepository batteries) =>
+            {
+                batteries.Delete(name);
 
-            return Results.NoContent();
-        });
+                return Results.NoContent();
+            });
 
         group.WithOpenApi();
 
-        return Task.FromResult(group);
+        return group;
     }
 }

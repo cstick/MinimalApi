@@ -5,7 +5,7 @@ namespace Web.APIs;
 /// <summary>
 /// Search criteria for batteries.
 /// </summary>
-public class BatteryCriteria : IRequest<IResult>
+public record BatteryCriteria : IRequest<IResult>
 {
     /// <summary>
     /// A battery name.

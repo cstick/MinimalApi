@@ -1,4 +1,5 @@
-﻿using Web.Data;
+﻿using MediatR;
+using Web.Data;
 
 namespace Web.APIs;
 
@@ -6,16 +7,14 @@ namespace Web.APIs;
 /// Handles a <see cref="GetBatteryByNameRequest"/>.
 /// </summary>
 /// <param name="batteries">A repository of batteries to get from.</param>
-public class GetBatteryByNameHandler(IBatteryRepository batteries) : MediatR.IRequestHandler<GetBatteryByNameRequest, IResult>
+public class GetBatteryByNameHandler(IBatteryRepository batteries) : IRequestHandler<GetBatteryByNameRequest, IResult>
 {
     /// <summary>
     /// Handle the request.
     /// </summary>
     public async Task<IResult> Handle(GetBatteryByNameRequest request, CancellationToken cancellationToken)
     {
-        await Task.Delay(0, cancellationToken);
-
-        var battery = batteries.Get(request.Name);
+        var battery = await batteries.Get(request.Name);
 
         if (battery is null)
         {

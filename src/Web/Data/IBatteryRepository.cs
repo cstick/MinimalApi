@@ -11,36 +11,40 @@ public interface IBatteryRepository
     /// Add a battery.
     /// </summary>
     /// <exception cref="InvalidOperationException">The battery already exists.</exception>
-    void AddBattery(Battery battery);
+    Task AddBattery(Battery battery, CancellationToken cancellationToken = default);
 
     /// <summary>
     /// Does a battery with the given name exist?
     /// </summary>
     /// <param name="name">The name of a battery.</param>
-    bool DoesBatteryExist(string name);
+    /// <param name="cancellationToken">A token for cancelling the operation.</param>
+    Task<bool> DoesBatteryExist(string name, CancellationToken cancellationToken = default);
 
     /// <summary>
     /// Find a battery.
     /// </summary>
     /// <param name="battery">A battery containing the values of properties to search wtih.</param>
+    /// <param name="cancellationToken">A token for cancelling the operation.</param>
     /// <returns>Any batteries found.</returns>
-    IEnumerable<Battery> Find(Battery battery);
+    Task<IEnumerable<Battery>> Find(Battery battery, CancellationToken cancellationToken = default);
 
     /// <summary>
     /// Get a battery by its name.
     /// </summary>
     /// <param name="name">The name of a battery.</param>
+    /// <param name="cancellationToken">A token for cancelling the operation.</param>
     /// <returns>The battery if found.</returns>
-    Battery? Get(string name);
+    Task<Battery?> Get(string name, CancellationToken cancellationToken = default);
 
     /// <summary>
     /// Delete a battery.
     /// </summary>
     /// <param name="name">The name of a battery.</param>
-    void Delete(string name);
+    /// <param name="cancellationToken">A token for cancelling the operation.</param>
+    Task Delete(string name, CancellationToken cancellationToken = default);
 
     /// <summary>
     /// Insert or update a battery.
     /// </summary>
-    void Upsert(Battery battery);
+    Task Upsert(Battery battery, CancellationToken cancellationToken = default);
 }
