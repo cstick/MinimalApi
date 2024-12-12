@@ -88,6 +88,7 @@ public class Program
 
         apiGroup
             .MapGroup("/batteries")
+            .WithTags("Batteries")
             .MapBatteryApi();
 
         apiGroup

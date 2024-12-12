@@ -32,19 +32,20 @@ internal static class BatteryApi
             return Results.Created($"batteries/{battery.Name}", default);
         });
 
-        group.MapGet("/{name}", (
-            [FromServices] IBatteryRepository batteries,
-            string name) =>
-        {
-            var battery = batteries.Get(name);
+        //group.MapGet("/{name}", (
+        //    [FromServices] IBatteryRepository batteries,
+        //    string name) =>
+        //{
+        //    var battery = batteries.Get(name);
 
-            if (battery is null)
-            {
-                return Results.NotFound();
-            }
+        //    if (battery is null)
+        //    {
+        //        return Results.NotFound();
+        //    }
 
-            return Results.Ok(battery);
-        });
+        //    return Results.Ok(battery);
+        //});
+        group.MapGet("/{name}", GetByName.Handle);
 
         group.MapPost("/search", (
             [FromServices] IBatteryRepository batteries,
@@ -65,5 +66,19 @@ internal static class BatteryApi
         group.WithOpenApi();
 
         return Task.FromResult(group);
+    }
+}
+public class GetByName
+{
+    public static IResult Handle([FromServices] IBatteryRepository batteries,string name)
+    {
+        var battery = batteries.Get(name);
+
+        if (battery is null)
+        {
+            return Results.NotFound();
+        }
+
+        return Results.Ok(battery);
     }
 }
