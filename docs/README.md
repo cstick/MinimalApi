@@ -12,3 +12,5 @@ This project is a playground for the minimal API while attempting to satisfy my 
 - [x] Use mediator.
 - [x] Unit Tests
 - [x] Integration Tests
+- [x] A data namespace with repositories.
+- [x] API versioning with 2 versions.

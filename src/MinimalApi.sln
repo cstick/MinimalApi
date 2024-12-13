@@ -9,7 +9,9 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{9FC9F54D
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Web.Tests.Unit", "Web.Tests.Unit\Web.Tests.Unit.csproj", "{9F68A254-F438-462D-B6BF-5C61C6A5B576}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Web.Tests.Integration", "Web.Tests.Integration\Web.Tests.Integration.csproj", "{346F0343-C7BD-4C98-B8F1-198216D7DF50}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Web.Tests.Integration", "Web.Tests.Integration\Web.Tests.Integration.csproj", "{346F0343-C7BD-4C98-B8F1-198216D7DF50}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Docs", "Docs", "{E947D1F0-E66C-49CE-AD80-1FD3B6A3AF6F}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
