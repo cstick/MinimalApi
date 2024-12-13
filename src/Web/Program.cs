@@ -32,7 +32,7 @@ public class Program
                 options.AssumeDefaultVersionWhenUnspecified = true;
                 options.SubstituteApiVersionInUrl = true;
                 options.GroupNameFormat = "'v'VVV";
-                
+
             });
 
         builder.Services.AddEndpointsApiExplorer();
