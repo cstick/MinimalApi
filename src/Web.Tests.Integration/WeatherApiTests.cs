@@ -12,7 +12,7 @@ public class WeatherApiTests
     [Fact]
     public async Task GetWeatherByIdReturnsRequestedForecast()
     {
-        var response = await host.Client.GetAsync($"/api/weather/{forecastId}");
+        var response = await host.Client.GetAsync($"product/v2/weather/{forecastId}");
 
         Assert.NotNull(response);
         Assert.True(response.IsSuccessStatusCode);
