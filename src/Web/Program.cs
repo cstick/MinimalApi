@@ -163,7 +163,7 @@ public class Program
                         description.GroupName.ToUpperInvariant());
                 }
 
-                //options.DisplayOperationId();
+                options.DisplayOperationId();
                 options.EnableTryItOutByDefault();
                 options.EnableDeepLinking();
                 options.RoutePrefix = "api";

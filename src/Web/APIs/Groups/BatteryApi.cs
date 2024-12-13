@@ -13,7 +13,8 @@ internal static class BatteryApi
             "/",
             Task<IResult> (IMediator mediator, Battery battery, CancellationToken cancellationToken) => mediator.Send(new CreateBatteryRequest(battery), cancellationToken))
             .WithSummary("Add")
-            .WithDescription("Add a battery.");
+            .WithDescription("Add a battery.")
+            .WithName("Get Battery");
 
         group.MapPut(
             "/{name}",
