@@ -1,3 +1,5 @@
+using Asp.Versioning;
+using Asp.Versioning.Conventions;
 using FluentValidation;
 using Microsoft.AspNetCore.HttpLogging;
 using System.Threading.RateLimiting;
@@ -17,8 +19,39 @@ public class Program
     {
         var builder = WebApplication.CreateBuilder(args);
 
+        builder.Services
+            .AddApiVersioning(options =>
+            {
+                options.DefaultApiVersion = new ApiVersion(2);
+                options.ReportApiVersions = true;
+                options.ApiVersionReader = new UrlSegmentApiVersionReader();
+            })
+            .AddApiExplorer(options =>
+            {
+                options.DefaultApiVersion = new(2);
+                options.AssumeDefaultVersionWhenUnspecified = true;
+                options.SubstituteApiVersionInUrl = true;
+                options.GroupNameFormat = "'v'VVV";
+
+            });
+
         builder.Services.AddEndpointsApiExplorer();
-        builder.Services.AddSwaggerGen();
+        builder.Services.AddSwaggerGen(setup =>
+        {
+            setup.SwaggerDoc("v1", new()
+            {
+                Version = "1",
+                Title = "My API",
+                Description = "An API created to becaome familiar with miminal APIs.v1"
+            });
+
+            setup.SwaggerDoc("v2", new()
+            {
+                Version = "2",
+                Title = "My API",
+                Description = "An API created to becaome familiar with miminal APIs.v2"
+            });
+        });
 
         builder.Services.AddHttpLogging(options =>
         {
@@ -71,6 +104,13 @@ public class Program
 
         var app = builder.Build();
 
+        var versionSet = app
+            .NewApiVersionSet()
+            .HasApiVersion(2)
+            .HasDeprecatedApiVersion(1)
+            .ReportApiVersions()
+            .Build();
+
         app.UseHttpLogging();
 
         app.UseHttpsRedirection();
@@ -78,21 +118,27 @@ public class Program
         //app.UseAuthorization();
 
         app.UseRateLimiter();
+
         var apiGroup = app
-            .MapGroup("/api")
+            .MapGroup("/product/v{version:apiVersion}")
             .RequireRateLimiting(defaultPolicyName);
 
         apiGroup
             .MapGroup("/batteries")
             .WithTags("Batteries")
             .WithHttpLogging(HttpLoggingFields.All)
-            .MapBatteryApi();
+            .MapBatteryApi()
+            .WithApiVersionSet(versionSet)
+            .MapToApiVersion(2);
 
         apiGroup
             .MapGroup("/weather")
             .WithTags("Weather")
             .WithHttpLogging(HttpLoggingFields.All)
-            .MapWeatherApi();
+            .MapWeatherApi()
+            .WithApiVersionSet(versionSet)
+            .MapToApiVersion(1)
+            .MapToApiVersion(2);
 
         app.MapHealthChecks("/health");
 
@@ -105,7 +151,24 @@ public class Program
         if (app.Environment.IsDevelopment())
         {
             app.UseSwagger();
-            app.UseSwaggerUI();
+
+            app.UseSwaggerUI(options =>
+            {
+                var descriptions = app.DescribeApiVersions();
+
+                foreach (var description in descriptions)
+                {
+                    options.SwaggerEndpoint(
+                        $"/swagger/{description.GroupName}/swagger.json",
+                        description.GroupName.ToUpperInvariant());
+                }
+
+                //options.DisplayOperationId();
+                options.EnableTryItOutByDefault();
+                options.EnableDeepLinking();
+                options.RoutePrefix = "api";
+                options.DisplayRequestDuration();
+            });
         }
 
         app.Run();
