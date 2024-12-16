@@ -1,8 +1,7 @@
 ﻿namespace Web.Models;
 
-public interface IBatteryIdentity
+public interface IBatteryStandards
 {
     string AnsiName { get; set; }
     string IecName { get; set; }
-    string Name { get; set; }
 }

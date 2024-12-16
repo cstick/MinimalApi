@@ -3,7 +3,7 @@
 /// <summary>
 /// Uniquely identifies a battery.
 /// </summary>
-public record BatteryIdentity : IBatteryIdentity
+public record BatteryIdentity : IBatteryStandards
 {
     /// <summary>
     /// The common name of the battery.

@@ -10,7 +10,7 @@ public class PutBatteryValidator : AbstractValidator<PutBattery>
         RuleFor(m => m.Name)
             .NotEmpty();
 
-        RuleFor(m => m.Specification)
+        RuleFor(m => m.Definition)
             .NotEmpty()
             .SetValidator(specificationValidator);
     }

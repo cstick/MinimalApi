@@ -1,4 +1,5 @@
-﻿using Web.Models;
+﻿using Web.APIs;
+using Web.Models;
 
 namespace Web.Data;
 
@@ -26,7 +27,7 @@ public interface IBatteryRepository
     /// <param name="battery">A battery containing the values of properties to search wtih.</param>
     /// <param name="cancellationToken">A token for cancelling the operation.</param>
     /// <returns>Any batteries found.</returns>
-    Task<IEnumerable<Battery>> Find(Battery battery, CancellationToken cancellationToken = default);
+    Task<IEnumerable<Battery>> Find(BatteryCriteria battery, CancellationToken cancellationToken = default);
 
     /// <summary>
     /// Get a battery by its name.

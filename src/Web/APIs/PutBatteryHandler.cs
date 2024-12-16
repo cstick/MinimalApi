@@ -30,7 +30,7 @@ public class PutBatteryHandler(PutBatteryValidator validator, IBatteryRepository
             battery = new Battery
             {
                 Name = request.Name,
-                Voltage = request.Specification.Voltage,
+                Voltage = request.Definition.Voltage,
             };
 
             await batteries.AddBattery(battery, cancellationToken);
@@ -38,7 +38,7 @@ public class PutBatteryHandler(PutBatteryValidator validator, IBatteryRepository
             return Results.Created($"batteries/{battery.Name}", battery);
         }
 
-        battery.Voltage = request.Specification.Voltage;
+        battery.Voltage = request.Definition.Voltage;
         await batteries.Upsert(battery, cancellationToken);
 
         return Results.Ok();

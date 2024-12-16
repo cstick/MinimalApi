@@ -1,6 +1,5 @@
 ﻿using MediatR;
 using Web.Data;
-using Web.Models;
 
 namespace Web.APIs;
 
@@ -10,15 +9,7 @@ public class SearchBatteriesHandler(IBatteryRepository batteries) : IRequestHand
     {
         cancellationToken.ThrowIfCancellationRequested();
 
-        var searchBattery = new Battery
-        {
-            Name = request.Name,
-            AnsiName = request.AnsiName,
-            IecName = request.IecName,
-            Voltage = request.Voltage,
-        };
-
-        var foundBatteries = await batteries.Find(searchBattery);
+        var foundBatteries = await batteries.Find(request, cancellationToken);
 
         return Results.Ok(foundBatteries);
     }

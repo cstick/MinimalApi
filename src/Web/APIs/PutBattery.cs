@@ -16,5 +16,5 @@ public record PutBattery : IRequest<IResult>
     /// <summary>
     /// The specifications of a batter.
     /// </summary>
-    public required IBatterySpecification Specification { get; set; }
+    public required BatteryDefinition Definition { get; set; }
 }

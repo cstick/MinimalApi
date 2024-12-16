@@ -18,7 +18,7 @@ internal static class BatteryApi
 
         group.MapPut(
             "/{name}",
-            Task<IResult> (IMediator mediator, string name, BatterySpecification specification, CancellationToken cancellationToken) => mediator.Send(new PutBattery { Name = name, Specification = specification, }, cancellationToken))
+            Task<IResult> (IMediator mediator, string name, BatteryDefinition definition, CancellationToken cancellationToken) => mediator.Send(new PutBattery { Name = name, Definition = definition, }, cancellationToken))
             .WithSummary("Replace a battery.")
             .WithDescription("Replace a battery's specifications.")
             .WithName("Replace");

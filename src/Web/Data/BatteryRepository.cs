@@ -1,4 +1,5 @@
-﻿using Web.Models;
+﻿using Web.APIs;
+using Web.Models;
 
 namespace Web.Data;
 
@@ -61,7 +62,7 @@ public class BatteryRepository : IBatteryRepository
     }
 
     /// <inheritdoc/>
-    public async Task<IEnumerable<Battery>> Find(Battery battery, CancellationToken cancellationToken)
+    public async Task<IEnumerable<Battery>> Find(BatteryCriteria battery, CancellationToken cancellationToken)
     {
         cancellationToken.ThrowIfCancellationRequested();
         await Task.Delay(0, cancellationToken);
@@ -89,7 +90,7 @@ public class BatteryRepository : IBatteryRepository
             results = results.Concat(found);
         }
 
-        return results;
+        return results.Distinct();
     }
 
     /// <inheritdoc/>
