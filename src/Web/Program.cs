@@ -35,21 +35,20 @@ public class Program
 
             });
 
-        builder.Services.AddEndpointsApiExplorer();
         builder.Services.AddSwaggerGen(setup =>
         {
             setup.SwaggerDoc("v1", new()
             {
                 Version = "1",
-                Title = "My API",
-                Description = "An API created to becaome familiar with miminal APIs.v1"
+                Title = "Product",
+                Description = "An API created to becaome familiar with miminal APIs."
             });
 
             setup.SwaggerDoc("v2", new()
             {
                 Version = "2",
-                Title = "My API",
-                Description = "An API created to becaome familiar with miminal APIs.v2"
+                Title = "Product",
+                Description = "An API created to becaome familiar with miminal APIs."
             });
         });
 
@@ -65,15 +64,8 @@ public class Program
         builder.Services.AddSingleton<StartupHealthCheck>();
         builder.Services.AddSingleton<ApiHealthCheck>();
 
-        builder.Services
-            .AddHealthChecks()
-            .AddCheck<StartupHealthCheck>("Startup")
-            .AddApiHealthCheck(
-                "Cat Facts",
-                new Uri("https://cat-fact.herokuapp.com/facts"),
-                frequency: TimeSpan.FromSeconds(15),
-                tags: ["Cat", "Dog"]);
-
+        builder.Services.RegisterHealthChecks();
+        
         builder.Services.AddHttpClient();
         builder.Services.AddMediatR(configuration => configuration.RegisterServicesFromAssemblyContaining<SearchWeatherHandler>());
         builder.Services.AddValidatorsFromAssemblyContaining<Program>();
@@ -104,13 +96,6 @@ public class Program
 
         var app = builder.Build();
 
-        var versionSet = app
-            .NewApiVersionSet()
-            .HasApiVersion(2)
-            .HasDeprecatedApiVersion(1)
-            .ReportApiVersions()
-            .Build();
-
         app.UseHttpLogging();
 
         app.UseHttpsRedirection();
@@ -118,6 +103,13 @@ public class Program
         //app.UseAuthorization();
 
         app.UseRateLimiter();
+
+        var versionSet = app
+            .NewApiVersionSet()
+            .HasApiVersion(2)
+            .HasDeprecatedApiVersion(1)
+            .ReportApiVersions()
+            .Build();
 
         var apiGroup = app
             .MapGroup("/product/v{version:apiVersion}")
@@ -140,13 +132,8 @@ public class Program
             .MapToApiVersion(1)
             .MapToApiVersion(2);
 
-        app.MapHealthChecks("/health");
-
-        app.MapHealthChecks("/health/ready", new()
-        {
-            ResponseWriter = HealthResponse.Writer
-        });
-
+        app.MapProductHealthChecks();
+        
         // Swagger UI.
         if (app.Environment.IsDevelopment())
         {
@@ -163,7 +150,6 @@ public class Program
                         description.GroupName.ToUpperInvariant());
                 }
 
-                options.DisplayOperationId();
                 options.EnableTryItOutByDefault();
                 options.EnableDeepLinking();
                 options.RoutePrefix = "api";

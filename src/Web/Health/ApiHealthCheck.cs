@@ -31,6 +31,7 @@ internal class ApiHealthCheck(IHttpClientFactory httpClientFactory) : IHealthChe
         if (_lastHeartbeat <= DateTime.UtcNow.Subtract(_frequency))
         {
             var client = httpClientFactory.CreateClient();
+            client.Timeout = TimeSpan.FromSeconds(3);
 
             var response = await client.GetAsync(
                 _uri,
