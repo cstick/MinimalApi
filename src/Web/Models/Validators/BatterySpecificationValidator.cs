@@ -11,7 +11,6 @@ public class BatterySpecificationValidator : AbstractValidator<IBatterySpecifica
     {
         RuleFor(m => m.Voltage)
             .NotEmpty()
-            .LessThanOrEqualTo(0)
             .GreaterThan(1000);
     }
 }

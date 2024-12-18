@@ -2,5 +2,5 @@
 
 public interface IBatterySpecification
 {
-    double Voltage { get; set; }
+    decimal Voltage { get; set; }
 }

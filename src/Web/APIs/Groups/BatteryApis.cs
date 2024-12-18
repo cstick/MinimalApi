@@ -5,7 +5,7 @@ using Web.Models;
 
 namespace Web.APIs.Groups;
 
-internal static class BatteryApi
+internal static class BatteryApis
 {
     public static RouteGroupBuilder MapBatteryApi(this RouteGroupBuilder group)
     {
@@ -28,7 +28,8 @@ internal static class BatteryApi
             Task<IResult> (IMediator mediator, string name, CancellationToken token) => mediator.Send(new GetBatteryByNameRequest { Name = name }, token))
             .WithSummary("Get a battery.")
             .WithDescription("Get a battery with a given name.")
-            .WithName("Get");
+            .WithName("GetBattery")
+            .WithDisplayName("GetBattery");
 
         group.MapPost(
             "/search",
@@ -47,7 +48,7 @@ internal static class BatteryApi
             })
             .WithSummary("Delete a battery")
             .WithDescription("Delete a battery with a given name.")
-            .WithName("Delete"); 
+            .WithName("Delete");
 
         group.WithOpenApi();
 

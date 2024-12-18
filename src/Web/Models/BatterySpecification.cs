@@ -8,5 +8,5 @@ public record BatterySpecification : IBatterySpecification
     /// <summary>
     /// The nominal voltage of the battery.
     /// </summary>
-    public required double Voltage { get; set; }
+    public required decimal Voltage { get; set; }
 }

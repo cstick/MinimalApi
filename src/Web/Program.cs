@@ -18,6 +18,7 @@ public class Program
     private static void Main(string[] args)
     {
         var builder = WebApplication.CreateBuilder(args);
+        builder.Services.AddHttpContextAccessor();
 
         builder.Services
             .AddApiVersioning(options =>
@@ -65,7 +66,7 @@ public class Program
         builder.Services.AddSingleton<ApiHealthCheck>();
 
         builder.Services.RegisterHealthChecks();
-        
+
         builder.Services.AddHttpClient();
         builder.Services.AddMediatR(configuration => configuration.RegisterServicesFromAssemblyContaining<SearchWeatherHandler>());
         builder.Services.AddValidatorsFromAssemblyContaining<Program>();
@@ -133,7 +134,7 @@ public class Program
             .MapToApiVersion(2);
 
         app.MapProductHealthChecks();
-        
+
         // Swagger UI.
         if (app.Environment.IsDevelopment())
         {

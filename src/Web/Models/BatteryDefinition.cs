@@ -12,5 +12,5 @@ public record BatteryDefinition : IBatteryStandards, IBatterySpecification
     public string AnsiName { get; set; } = string.Empty;
 
     /// <inheritdoc/>
-    public double Voltage { get; set; }
+    public decimal Voltage { get; set; }
 }
