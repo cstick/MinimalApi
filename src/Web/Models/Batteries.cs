@@ -10,7 +10,7 @@ public static class Batteries
         Name = "AA",
         IecName = "R6",
         AnsiName = "15A",
-        Voltage = 1.5
+        Voltage = 1.5m
     };
 
     public static Battery AAA { get; set; } = new()
@@ -18,7 +18,7 @@ public static class Batteries
         Name = "AAA",
         IecName = "R03",
         AnsiName = "24A",
-        Voltage = 1.5
+        Voltage = 1.5m
     };
 
     public static Battery AAAA { get; set; } = new()
@@ -26,7 +26,7 @@ public static class Batteries
         Name = "AAAA",
         IecName = "R8D425",
         AnsiName = "25A",
-        Voltage = 1.5
+        Voltage = 1.5m
     };
 
     public static Battery C { get; set; } = new()
@@ -34,7 +34,7 @@ public static class Batteries
         Name = "C",
         IecName = "R14",
         AnsiName = "14A",
-        Voltage = 1.5
+        Voltage = 1.5m
     };
 
     public static Battery D { get; set; } = new()
@@ -42,6 +42,6 @@ public static class Batteries
         Name = "D",
         IecName = "R20",
         AnsiName = "13A",
-        Voltage = 3.0
+        Voltage = 3.0m
     };
 }

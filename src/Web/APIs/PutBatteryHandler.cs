@@ -30,6 +30,8 @@ public class PutBatteryHandler(PutBatteryValidator validator, IBatteryRepository
             battery = new Battery
             {
                 Name = request.Name,
+                AnsiName = request.Definition.AnsiName,
+                IecName = request.Definition.IecName,
                 Voltage = request.Definition.Voltage,
             };
 

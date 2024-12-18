@@ -5,13 +5,13 @@ namespace Web.APIs;
 
 public class PutBatteryValidator : AbstractValidator<PutBattery>
 {
-    public PutBatteryValidator(BatterySpecificationValidator specificationValidator)
+    public PutBatteryValidator(BatteryDefinitionValidator definitionValidator)
     {
         RuleFor(m => m.Name)
             .NotEmpty();
 
         RuleFor(m => m.Definition)
             .NotEmpty()
-            .SetValidator(specificationValidator);
+            .SetValidator(definitionValidator);
     }
 }

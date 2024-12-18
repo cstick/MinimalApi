@@ -3,14 +3,14 @@
 /// <summary>
 /// Size, shape and characteristics of common battery types.
 /// </summary>
-public record BatteryDefinition : IBatteryStandards, IBatterySpecification
+public record BatteryDefinition
 {
     /// <inheritdoc/>
-    public string IecName { get; set; } = string.Empty;
+    public required string IecName { get; set; }
 
     /// <inheritdoc/>
-    public string AnsiName { get; set; } = string.Empty;
+    public required string AnsiName { get; set; }
 
     /// <inheritdoc/>
-    public double Voltage { get; set; }
+    public required decimal Voltage { get; set; }
 }
