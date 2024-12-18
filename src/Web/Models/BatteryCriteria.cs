@@ -1,6 +1,6 @@
 ﻿using MediatR;
 
-namespace Web.APIs;
+namespace Web.Models;
 
 /// <summary>
 /// Search criteria for batteries.
