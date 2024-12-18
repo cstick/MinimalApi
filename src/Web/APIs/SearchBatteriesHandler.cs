@@ -1,5 +1,6 @@
 ﻿using MediatR;
 using Web.Data;
+using Web.Models;
 
 namespace Web.APIs;
 
