@@ -96,9 +96,7 @@ public class Program
         builder.Services.AddRepositories();
 
         var app = builder.Build();
-
         app.UseHttpLogging();
-
         app.UseHttpsRedirection();
         //app.UseExceptionHandler();
         //app.UseAuthorization();
@@ -136,7 +134,7 @@ public class Program
         app.MapProductHealthChecks();
 
         // Swagger UI.
-        if (app.Environment.IsDevelopment())
+        if (app.Environment.IsDevelopment() || app.Environment.IsEnvironment("NonDevelopment"))
         {
             app.UseSwagger();
 
