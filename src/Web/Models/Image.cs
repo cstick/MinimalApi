@@ -9,7 +9,7 @@ public record Image
     /// The name of a battery.
     /// </summary>
     public required string Battery { get; set; }
-    
+
     /// <summary>
     /// The file name of the image.
     /// </summary>

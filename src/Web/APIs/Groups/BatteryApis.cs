@@ -1,5 +1,4 @@
 ﻿using MediatR;
-using Microsoft.AspNetCore.HttpLogging;
 using Microsoft.AspNetCore.Mvc;
 using Web.Data;
 using Web.Models;
