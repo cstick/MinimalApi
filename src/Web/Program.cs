@@ -123,13 +123,20 @@ public class Program
             .MapToApiVersion(2);
 
         apiGroup
+            .MapGroup("batteries/{name}/images")
+            .WithTags("Images")
+            .WithHttpLogging(HttpLoggingFields.All)
+            .WithApiVersionSet(versionSet)
+            .MapToApiVersion(2)
+            .MapBatteryImageApi();
+
+        apiGroup
             .MapGroup("/weather")
             .WithTags("Weather")
             .WithHttpLogging(HttpLoggingFields.All)
             .MapWeatherApi()
             .WithApiVersionSet(versionSet)
-            .MapToApiVersion(1)
-            .MapToApiVersion(2);
+            .MapToApiVersion(1);
 
         app.MapProductHealthChecks();
 

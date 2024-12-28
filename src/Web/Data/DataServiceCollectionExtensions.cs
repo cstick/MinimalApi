@@ -11,6 +11,7 @@ public static class DataServiceCollectionExtensions
     public static IServiceCollection AddRepositories(this IServiceCollection services)
     {
         services.AddTransient<IBatteryRepository, BatteryRepository>();
+        services.AddTransient<IImageRepository, ImageRepository>();
 
         return services;
     }
