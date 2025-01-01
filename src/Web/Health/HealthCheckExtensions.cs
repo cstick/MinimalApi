@@ -15,10 +15,10 @@
                 .AddHealthChecks()
                 .AddCheck<StartupHealthCheck>("Startup")
                 .AddApiHealthCheck(
-                    "Cat Facts",
-                    new Uri("https://cat-fact.herokuapp.com/facts"),
+                    "Google",
+                    new Uri("https://google.com"),
                     frequency: TimeSpan.FromSeconds(15),
-                    tags: ["Cat", "Dog"]);
+                    tags: ["Search", "Alive"]);
 
             return services;
         }

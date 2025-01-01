@@ -5,7 +5,7 @@ namespace Web.APIs;
 /// <summary>
 /// Command to get a battery by name.
 /// </summary>
-public record GetBatteryByNameRequest : IRequest<IResult>
+public record GetBatteryByName : IRequest<IResult>
 {
     /// <summary>
     /// The name of a battery.

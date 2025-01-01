@@ -2,6 +2,8 @@ using Asp.Versioning;
 using Asp.Versioning.Conventions;
 using FluentValidation;
 using Microsoft.AspNetCore.HttpLogging;
+using Serilog;
+using System.Diagnostics;
 using System.Threading.RateLimiting;
 using Web.APIs.Groups;
 using Web.Data;
@@ -18,6 +20,16 @@ public class Program
     private static void Main(string[] args)
     {
         var builder = WebApplication.CreateBuilder(args);
+
+        if (builder.Environment.IsDevelopment())
+        {
+            Serilog.Debugging.SelfLog.Enable(msg => Debug.WriteLine(msg));
+        }
+
+        builder.Services
+            .AddSerilog((services, loggerConfiguration) =>
+            loggerConfiguration.ReadFrom.Configuration(builder.Configuration));
+
         builder.Services.AddHttpContextAccessor();
 
         builder.Services
@@ -59,7 +71,6 @@ public class Program
         });
 
         builder.Services.AddMemoryCache();
-        builder.Logging.AddConsole();
 
         builder.Services.AddHostedService<StartupBackgroundService>();
         builder.Services.AddSingleton<StartupHealthCheck>();
@@ -96,6 +107,8 @@ public class Program
         builder.Services.AddRepositories();
 
         var app = builder.Build();
+
+        app.UseSerilogRequestLogging();
         app.UseHttpLogging();
         app.UseHttpsRedirection();
         //app.UseExceptionHandler();
@@ -141,7 +154,7 @@ public class Program
         app.MapProductHealthChecks();
 
         // Swagger UI.
-        if (app.Environment.IsDevelopment() || app.Environment.IsEnvironment("NonDevelopment"))
+        if (app.Environment.IsDevelopment())
         {
             app.UseSwagger();
 
