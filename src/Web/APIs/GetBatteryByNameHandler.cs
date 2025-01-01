@@ -7,6 +7,7 @@ namespace Web.APIs;
 /// Handles a <see cref="GetBatteryByName"/>.
 /// </summary>
 /// <param name="batteries">A repository of batteries to get from.</param>
+/// <param name="logger">For logging the operations.</param>
 public class GetBatteryByNameHandler(
     IBatteryRepository batteries,
     ILogger<GetBatteryByNameHandler> logger) : IRequestHandler<GetBatteryByName, IResult>
