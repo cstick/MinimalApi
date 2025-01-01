@@ -9,8 +9,12 @@
         /// Register health checks.
         /// </summary>
         /// <param name="services">A <see cref="IServiceCollection"/> to register with.</param>
-        public static IServiceCollection RegisterHealthChecks(this IServiceCollection services)
+        public static IServiceCollection AddApplicationHealthChecks(this IServiceCollection services)
         {
+            services.AddHostedService<StartupBackgroundService>();
+            services.AddSingleton<StartupHealthCheck>();
+            services.AddSingleton<ApiHealthCheck>();
+
             services
                 .AddHealthChecks()
                 .AddCheck<StartupHealthCheck>("Startup")

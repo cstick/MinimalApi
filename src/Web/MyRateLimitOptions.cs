@@ -8,7 +8,7 @@ public class MyRateLimitOptions
     /// <summary>
     /// Configuration section name.
     /// </summary>
-    public const string MyRateLimit = "MyRateLimit";
+    public const string ConfigurationSection = "MyRateLimit";
 
     /// <summary>
     /// Replinishment period in seconds.

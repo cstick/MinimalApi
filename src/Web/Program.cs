@@ -2,6 +2,7 @@ using Asp.Versioning;
 using Asp.Versioning.Conventions;
 using FluentValidation;
 using Microsoft.AspNetCore.HttpLogging;
+using Microsoft.AspNetCore.RateLimiting;
 using Serilog;
 using System.Diagnostics;
 using System.Threading.RateLimiting;
@@ -17,6 +18,8 @@ namespace Web;
 /// </summary>
 public class Program
 {
+    private const string RateLimitertPolicyName = "default";
+
     private static void Main(string[] args)
     {
         var builder = WebApplication.CreateBuilder(args);
@@ -72,36 +75,32 @@ public class Program
 
         builder.Services.AddMemoryCache();
 
-        builder.Services.AddHostedService<StartupBackgroundService>();
-        builder.Services.AddSingleton<StartupHealthCheck>();
-        builder.Services.AddSingleton<ApiHealthCheck>();
-
-        builder.Services.RegisterHealthChecks();
+        builder.Services.AddApplicationHealthChecks();
 
         builder.Services.AddHttpClient();
         builder.Services.AddMediatR(configuration => configuration.RegisterServicesFromAssemblyContaining<SearchWeatherHandler>());
         builder.Services.AddValidatorsFromAssemblyContaining<Program>();
 
-        var myOptions = new MyRateLimitOptions();
-        builder.Configuration.GetSection(MyRateLimitOptions.MyRateLimit).Bind(myOptions);
-        var defaultPolicyName = "default";
-
         builder.Services.AddRateLimiter(limiterOptions =>
         {
+            var myOptions = builder.Configuration.GetValue(MyRateLimitOptions.ConfigurationSection, new MyRateLimitOptions());
+
             limiterOptions.RejectionStatusCode = StatusCodes.Status429TooManyRequests;
-            limiterOptions.AddPolicy(policyName: defaultPolicyName, partitioner: httpContext =>
-            {
-                return RateLimitPartition.GetTokenBucketLimiter("Anon", _ =>
-                    new TokenBucketRateLimiterOptions
-                    {
-                        TokenLimit = myOptions.TokenLimit,
-                        QueueProcessingOrder = QueueProcessingOrder.OldestFirst,
-                        QueueLimit = myOptions.QueueLimit,
-                        ReplenishmentPeriod = TimeSpan.FromSeconds(myOptions.ReplenishmentPeriod),
-                        TokensPerPeriod = myOptions.TokensPerPeriod,
-                        AutoReplenishment = true
-                    });
-            });
+            limiterOptions.AddPolicy(
+                policyName: RateLimitertPolicyName,
+                partitioner: httpContext =>
+                {
+                    return RateLimitPartition.GetTokenBucketLimiter("Anon", _ =>
+                        new TokenBucketRateLimiterOptions
+                        {
+                            TokenLimit = myOptions.TokenLimit,
+                            QueueProcessingOrder = QueueProcessingOrder.OldestFirst,
+                            QueueLimit = myOptions.QueueLimit,
+                            ReplenishmentPeriod = TimeSpan.FromSeconds(myOptions.ReplenishmentPeriod),
+                            TokensPerPeriod = myOptions.TokensPerPeriod,
+                            AutoReplenishment = true
+                        });
+                });
         });
 
         builder.Services.AddRepositories();
@@ -125,7 +124,7 @@ public class Program
 
         var apiGroup = app
             .MapGroup("/product/v{version:apiVersion}")
-            .RequireRateLimiting(defaultPolicyName);
+            .RequireRateLimiting(RateLimitertPolicyName);
 
         apiGroup
             .MapGroup("/batteries")
