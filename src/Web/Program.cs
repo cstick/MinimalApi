@@ -2,7 +2,6 @@ using Asp.Versioning;
 using Asp.Versioning.Conventions;
 using FluentValidation;
 using Microsoft.AspNetCore.HttpLogging;
-using Microsoft.AspNetCore.RateLimiting;
 using Serilog;
 using System.Diagnostics;
 using System.Threading.RateLimiting;

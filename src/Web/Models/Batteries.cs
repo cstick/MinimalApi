@@ -5,6 +5,9 @@
 /// </summary>
 public static class Batteries
 {
+    /// <summary>
+    /// An standard battery.
+    /// </summary>
     public static Battery AA { get; set; } = new()
     {
         Name = "AA",
@@ -13,6 +16,9 @@ public static class Batteries
         Voltage = 1.5m
     };
 
+    /// <summary>
+    /// An standard battery.
+    /// </summary>
     public static Battery AAA { get; set; } = new()
     {
         Name = "AAA",
@@ -21,6 +27,9 @@ public static class Batteries
         Voltage = 1.5m
     };
 
+    /// <summary>
+    /// An standard battery.
+    /// </summary>
     public static Battery AAAA { get; set; } = new()
     {
         Name = "AAAA",
@@ -29,6 +38,9 @@ public static class Batteries
         Voltage = 1.5m
     };
 
+    /// <summary>
+    /// An standard battery.
+    /// </summary>
     public static Battery C { get; set; } = new()
     {
         Name = "C",
@@ -37,6 +49,9 @@ public static class Batteries
         Voltage = 1.5m
     };
 
+    /// <summary>
+    /// An standard battery.
+    /// </summary>
     public static Battery D { get; set; } = new()
     {
         Name = "D",
