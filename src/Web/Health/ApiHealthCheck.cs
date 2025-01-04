@@ -7,7 +7,7 @@ internal class ApiHealthCheck(
     ILogger<ApiHealthCheck> logger) : IHealthCheck
 {
     private readonly object _lock = new();
-    private volatile bool _isHealthy = false;
+    private bool _isHealthy = false;
     private DateTime _lastHeartbeat = DateTime.MinValue.ToUniversalTime();
 
     public Uri? _uri;
