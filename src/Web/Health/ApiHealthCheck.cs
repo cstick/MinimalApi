@@ -4,6 +4,7 @@ namespace Web.Health;
 
 internal class ApiHealthCheck(IHttpClientFactory httpClientFactory) : IHealthCheck
 {
+    private readonly object _lock = new();
     private bool _isHealthy = false;
     private DateTime _lastHeartbeat = DateTime.MinValue.ToUniversalTime();
 
@@ -28,6 +29,7 @@ internal class ApiHealthCheck(IHttpClientFactory httpClientFactory) : IHealthChe
         HealthCheckContext context,
         CancellationToken cancellationToken = default)
     {
+
         if (_lastHeartbeat <= DateTime.UtcNow.Subtract(_frequency))
         {
             var client = httpClientFactory.CreateClient();
@@ -37,8 +39,11 @@ internal class ApiHealthCheck(IHttpClientFactory httpClientFactory) : IHealthChe
                 _uri,
                 cancellationToken);
 
-            _isHealthy = response.IsSuccessStatusCode;
-            _lastHeartbeat = DateTime.UtcNow;
+            lock (_lock)
+            {
+                _isHealthy = response.IsSuccessStatusCode;
+                _lastHeartbeat = DateTime.UtcNow;
+            }
         }
 
         var data = new Dictionary<string, object>
