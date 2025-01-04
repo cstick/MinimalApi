@@ -2,10 +2,12 @@
 
 namespace Web.Health;
 
-internal class ApiHealthCheck(IHttpClientFactory httpClientFactory) : IHealthCheck
+internal class ApiHealthCheck(
+    IHttpClientFactory httpClientFactory,
+    ILogger<ApiHealthCheck> logger) : IHealthCheck
 {
     private readonly object _lock = new();
-    private bool _isHealthy = false;
+    private volatile bool _isHealthy = false;
     private DateTime _lastHeartbeat = DateTime.MinValue.ToUniversalTime();
 
     public Uri? _uri;
@@ -35,14 +37,27 @@ internal class ApiHealthCheck(IHttpClientFactory httpClientFactory) : IHealthChe
             var client = httpClientFactory.CreateClient();
             client.Timeout = TimeSpan.FromSeconds(3);
 
-            var response = await client.GetAsync(
-                _uri,
-                cancellationToken);
-
-            lock (_lock)
+            try
             {
-                _isHealthy = response.IsSuccessStatusCode;
+                var response = await client.GetAsync(
+                    _uri,
+                    cancellationToken);
+
+                lock (_lock)
+                {
+                    _isHealthy = response.IsSuccessStatusCode;
+                }
+
                 _lastHeartbeat = DateTime.UtcNow;
+            }
+            catch (Exception ex)
+            {
+                logger.LogError(ex, "Health check failed.");
+
+                lock (_lock)
+                {
+                    _isHealthy = false;
+                }
             }
         }
 
@@ -51,11 +66,8 @@ internal class ApiHealthCheck(IHttpClientFactory httpClientFactory) : IHealthChe
             { "checked", _lastHeartbeat }
         };
 
-        if (_isHealthy)
-        {
-            return HealthCheckResult.Healthy("The client is healthy.", data);
-        }
-
-        return HealthCheckResult.Unhealthy("That client is unhealthy.", data: data);
+        return _isHealthy
+            ? HealthCheckResult.Healthy("The client is healthy.", data)
+            : HealthCheckResult.Unhealthy("The client is unhealthy.", data: data);
     }
 }
