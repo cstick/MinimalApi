@@ -4,52 +4,51 @@ using Web.Handlers;
 using Web.Models;
 using Web.Models.Validators;
 
-namespace Web.Tests.Unit
+namespace Web.Tests.Unit;
+
+public class GetWeatherForecastHandlerTests
 {
-    public class GetWeatherForecastHandlerTests
+    private readonly IValidator<GetWeather> _validator = new GetWeatherForecastValidator();
+    private readonly GetWeatherHandler sut;
+
+    public GetWeatherForecastHandlerTests()
     {
-        private readonly IValidator<GetWeather> _validator = new GetWeatherForecastValidator();
-        private readonly GetWeatherHandler sut;
+        sut = new(_validator);
+    }
 
-        public GetWeatherForecastHandlerTests()
+    [Fact]
+    public async Task ReturnsOkayWithForecast()
+    {
+        var request = new GetWeather
         {
-            sut = new(_validator);
-        }
+            Id = "asd",
+        };
 
-        [Fact]
-        public async Task ReturnsOkayWithForecast()
+        var response = await sut.Handle(request, default);
+
+        Assert.NotNull(response);
+
+        var result = response.Result as Ok<WeatherForecast>;
+
+        Assert.NotNull(result);
+
+        var forecast = result.Value;
+
+        Assert.NotNull(forecast);
+        Assert.Equal(request.Id, forecast.Summary);
+    }
+
+    [Theory]
+    [InlineData("")]
+    public async Task ValidatesInput(string id)
+    {
+        var request = new GetWeather
         {
-            var request = new GetWeather
-            {
-                Id = "asd",
-            };
+            Id = id,
+        };
 
-            var response = await sut.Handle(request, default);
+        var result = (await sut.Handle(request, default)).Result as ValidationProblem;
 
-            Assert.NotNull(response);
-
-            var result = response.Result as Ok<WeatherForecast>;
-
-            Assert.NotNull(result);
-
-            var forecast = result.Value;
-
-            Assert.NotNull(forecast);
-            Assert.Equal(request.Id, forecast.Summary);
-        }
-
-        [Theory]
-        [InlineData("")]
-        public async Task ValidatesInput(string id)
-        {
-            var request = new GetWeather
-            {
-                Id = id,
-            };
-
-            var result = (await sut.Handle(request, default)).Result as ValidationProblem;
-
-            Assert.NotNull(result);
-        }
+        Assert.NotNull(result);
     }
 }

@@ -17,7 +17,7 @@ internal static partial class BatteryImageApis
                 LinkGenerator linkGenerator,
                 CancellationToken cancellationToken) =>
             {
-                var battery = await batteries.Get(name);
+                var battery = await batteries.Get(name, cancellationToken);
 
                 if (battery is null)
                 {
@@ -25,7 +25,7 @@ internal static partial class BatteryImageApis
                 }
 
                 using var ms = new MemoryStream();
-                await file.OpenReadStream().CopyToAsync(ms);
+                await file.OpenReadStream().CopyToAsync(ms, cancellationToken);
 
                 var id = Guid.NewGuid();
                 var image = new Image

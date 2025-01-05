@@ -29,7 +29,7 @@ public class CreateBatteryRequestHandler(
             return Results.ValidationProblem(validationResult.ToDictionary());
         };
 
-        if (await batteries.DoesBatteryExist(request.Battery.Name))
+        if (await batteries.DoesBatteryExist(request.Battery.Name, cancellationToken))
         {
             return Results.Conflict("Battery already exists.");
         }

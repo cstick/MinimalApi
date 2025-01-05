@@ -7,6 +7,17 @@ internal static class IHealthCheckBuilderExtensions
 {
     private static readonly TimeSpan DefaultFrequency = TimeSpan.FromSeconds(15);
 
+    /// <summary>
+    /// Add an API health check to the health check builder.
+    /// </summary>
+    /// <param name="builder"></param>
+    /// <param name="name">The name of the health check.</param>
+    /// <param name="uri">The URI for checking connectivity with.</param>
+    /// <param name="frequency">How frequently should the URI be checked.</param>
+    /// <param name="failureStatus"></param>
+    /// <param name="tags"></param>
+    /// <returns></returns>
+    /// <exception cref="InvalidOperationException"></exception>
     public static IHealthChecksBuilder AddApiHealthCheck(
         this IHealthChecksBuilder builder,
         string name,

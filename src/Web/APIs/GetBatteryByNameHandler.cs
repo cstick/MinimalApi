@@ -17,7 +17,7 @@ public class GetBatteryByNameHandler(
     /// </summary>
     public async Task<IResult> Handle(GetBatteryByName request, CancellationToken cancellationToken)
     {
-        var battery = await batteries.Get(request.Name);
+        var battery = await batteries.Get(request.Name, cancellationToken);
 
         if (battery is null)
         {
