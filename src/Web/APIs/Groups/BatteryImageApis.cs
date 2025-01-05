@@ -1,4 +1,5 @@
-﻿using Web.Data;
+﻿using System.ComponentModel;
+using Web.Data;
 using Web.Models;
 
 namespace Web.APIs.Groups;
@@ -9,8 +10,8 @@ internal static partial class BatteryImageApis
     {
         group
             .MapPost("", async Task<IResult> (
-                string name,
-                IFormFile file,
+                [Description("A battery name.")] string name,
+                [Description("The image to add.")] IFormFile file,
                 IBatteryRepository batteries,
                 IImageRepository images,
                 HttpContext context,
@@ -46,12 +47,14 @@ internal static partial class BatteryImageApis
                 return Results.Created(url, id);
             })
             .DisableAntiforgery()
-            .WithName(EndpointNames.Batteries.Images.Add);
+            .WithName(EndpointNames.Batteries.Images.Add)
+            .WithSummary("Add battery image.")
+            .WithDescription("Add an image to a battery.");
 
         group
             .MapGet("{id}", async Task<IResult> (
-                string name,
-                Guid id,
+                [Description("A battery name.")] string name,
+                [Description("An image id.")] Guid id,
                 IBatteryRepository batteries,
                 IImageRepository images,
                 CancellationToken cancellationToken) =>
@@ -72,7 +75,9 @@ internal static partial class BatteryImageApis
 
                 return Results.File(image.Content, image.ContentType, image.FileName);
             })
-            .WithName(EndpointNames.Batteries.Images.Get);
+            .WithName(EndpointNames.Batteries.Images.Get)
+            .WithSummary("Get battery image.")
+            .WithDescription("Get a battery image.");
 
         group.WithOpenApi();
 
