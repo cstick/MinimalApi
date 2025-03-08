@@ -39,7 +39,7 @@ public class Program
             {
                 options.DefaultApiVersion = new ApiVersion(2);
                 options.ReportApiVersions = true;
-                options.ApiVersionReader = new UrlSegmentApiVersionReader();
+                options.ApiVersionReader = new QueryStringApiVersionReader();
             })
             .AddApiExplorer(options =>
             {
@@ -122,7 +122,7 @@ public class Program
             .Build();
 
         var apiGroup = app
-            .MapGroup("/product/v{version:apiVersion}")
+            .MapGroup("/product")
             .RequireRateLimiting(RateLimitertPolicyName);
 
         apiGroup
