@@ -5,7 +5,7 @@ namespace Web.Models.Validators;
 /// <summary>
 /// Validates a <see cref="BatteryDefinition"/>.
 /// </summary>
-public class BatteryDefinitionValidator : AbstractValidator<BatteryDefinition>
+internal class BatteryDefinitionValidator : AbstractValidator<BatteryDefinition>
 {
     /// <summary>
     /// Construct the validator.

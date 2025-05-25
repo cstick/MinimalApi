@@ -5,7 +5,7 @@ namespace Web.Models.Validators;
 /// <summary>
 /// Validates <see cref="GetWeather"/>.
 /// </summary>
-public class GetWeatherForecastValidator : AbstractValidator<GetWeather>
+internal class GetWeatherForecastValidator : AbstractValidator<GetWeather>
 {
     /// <summary>
     /// The validation rules.

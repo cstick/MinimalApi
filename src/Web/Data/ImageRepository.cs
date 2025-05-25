@@ -5,7 +5,7 @@ namespace Web.Data;
 /// <summary>
 /// In memory repository of images.
 /// </summary>
-public class ImageRepository : IImageRepository
+internal class ImageRepository : IImageRepository
 {
     /// <summary>
     /// An in memory dictionary of images by their id.

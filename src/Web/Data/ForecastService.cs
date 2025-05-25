@@ -3,7 +3,7 @@
 namespace Web.Data;
 
 /// <inheritdoc/>
-public class ForecastService : IForecastService
+internal class ForecastService : IForecastService
 {
     private readonly IList<WeatherForecast> forecasts = [];
 

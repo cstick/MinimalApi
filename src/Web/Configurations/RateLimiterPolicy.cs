@@ -3,7 +3,7 @@
 /// <summary>
 /// Options for rate limiting.
 /// </summary>
-public class RateLimiterPolicy
+internal class RateLimiterPolicy
 {
     /// <summary>
     /// The name of the policy.

@@ -11,7 +11,7 @@ namespace Web.Operations;
 /// <param name="batteries"></param>
 /// <param name="contextAccessor"></param>
 /// <param name="linkGenerator">Generates a link for the newly created battery.</param>
-public class CreateBatteryRequestHandler(
+internal class CreateBatteryRequestHandler(
     BatteryValidator batteryValidator,
     IBatteryRepository batteries,
     IHttpContextAccessor contextAccessor,

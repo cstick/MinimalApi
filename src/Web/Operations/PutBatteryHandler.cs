@@ -9,7 +9,7 @@ namespace Web.Operations;
 /// </summary>
 /// <param name="validator">Validates the request.</param>
 /// <param name="batteries">A repository of batteries.</param>
-public class PutBatteryHandler(PutBatteryValidator validator, IBatteryRepository batteries) : IRequestHandler<PutBattery, IResult>
+internal class PutBatteryHandler(PutBatteryValidator validator, IBatteryRepository batteries) : IRequestHandler<PutBattery, IResult>
 {
     /// <summary>
     /// Handle the request.

@@ -6,7 +6,7 @@ namespace Web.Operations;
 /// <summary>
 /// Validates a command to replace a battery.
 /// </summary>
-public class PutBatteryValidator : AbstractValidator<PutBattery>
+internal class PutBatteryValidator : AbstractValidator<PutBattery>
 {
     /// <param name="definitionValidator">Validates the battery definition.</param>
     public PutBatteryValidator(BatteryDefinitionValidator definitionValidator)

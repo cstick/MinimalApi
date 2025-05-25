@@ -3,7 +3,7 @@
 namespace Web.Data;
 
 /// <inheritdoc/>
-public class BatteryRepository : IBatteryRepository
+internal class BatteryRepository : IBatteryRepository
 {
     private static readonly IList<Battery> _batteries;
 

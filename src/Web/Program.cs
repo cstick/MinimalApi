@@ -1,18 +1,21 @@
 using Asp.Versioning;
-using Serilog;
 using System.Diagnostics;
+using System.Runtime.CompilerServices;
 using Web.APIs;
 using Web.Data;
 using Web.Health;
 using Web.Models;
 using Web.Operations;
 
+[assembly: InternalsVisibleTo("Web.Tests.Integration")]
+[assembly: InternalsVisibleTo("Web.Tests.Unit")]
+
 namespace Web;
 
 /// <summary>
 /// Assembly entrypoint.
 /// </summary>
-public class Program
+internal class Program
 {
     private static void Main(string[] args)
     {

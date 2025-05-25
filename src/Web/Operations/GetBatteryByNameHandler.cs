@@ -8,7 +8,7 @@ namespace Web.Operations;
 /// </summary>
 /// <param name="batteries">A repository of batteries to get from.</param>
 /// <param name="logger">For logging the operations.</param>
-public class GetBatteryByNameHandler(
+internal class GetBatteryByNameHandler(
     IBatteryRepository batteries,
     ILogger<GetBatteryByNameHandler> logger) : IRequestHandler<GetBatteryByName, IResult>
 {

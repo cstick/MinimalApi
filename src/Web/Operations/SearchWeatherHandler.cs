@@ -6,7 +6,7 @@ namespace Web.Operations;
 /// <summary>
 /// Search weather forecasts.
 /// </summary>
-public class SearchWeatherHandler : IRequestHandler<SearchWeather, IEnumerable<WeatherForecast>>
+internal class SearchWeatherHandler : IRequestHandler<SearchWeather, IEnumerable<WeatherForecast>>
 {
     /// <inheritdoc/>
     public Task<IEnumerable<WeatherForecast>> Handle(
