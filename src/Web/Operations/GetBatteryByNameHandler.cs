@@ -1,7 +1,7 @@
 ﻿using MediatR;
 using Web.Data;
 
-namespace Web.APIs;
+namespace Web.Operations;
 
 /// <summary>
 /// Handles a <see cref="GetBatteryByName"/>.

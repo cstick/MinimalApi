@@ -1,14 +1,14 @@
-﻿namespace Web;
+﻿namespace Web.Configurations;
 
 /// <summary>
 /// Options for rate limiting.
 /// </summary>
-public class MyRateLimitOptions
+public class RateLimiterPolicy
 {
     /// <summary>
-    /// Configuration section name.
+    /// The name of the policy.
     /// </summary>
-    public const string ConfigurationSection = "MyRateLimit";
+    public required string PolicyName { get; set; } = "default";
 
     /// <summary>
     /// Replinishment period in seconds.
@@ -29,4 +29,13 @@ public class MyRateLimitOptions
     /// Token limit.
     /// </summary>
     public int TokensPerPeriod { get; set; } = 4;
+
+    public static RateLimiterPolicy Default { get; } = new()
+    {
+        PolicyName = "default",
+        ReplenishmentPeriod = 2,
+        QueueLimit = 2,
+        TokenLimit = 10,
+        TokensPerPeriod = 4,
+    };
 }

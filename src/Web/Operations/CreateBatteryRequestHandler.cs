@@ -2,7 +2,7 @@
 using Web.Data;
 using Web.Models.Validators;
 
-namespace Web.APIs;
+namespace Web.Operations;
 
 /// <summary>
 /// Handles <see cref="CreateBatteryRequest"/> and returns an <see cref="IResult"/> suitable for a web API.
@@ -27,7 +27,8 @@ public class CreateBatteryRequestHandler(
         if (!validationResult.IsValid)
         {
             return Results.ValidationProblem(validationResult.ToDictionary());
-        };
+        }
+        ;
 
         if (await batteries.DoesBatteryExist(request.Battery.Name, cancellationToken))
         {

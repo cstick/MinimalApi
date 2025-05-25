@@ -1,7 +1,7 @@
 ﻿using MediatR;
 using Web.Models;
 
-namespace Web.Handlers;
+namespace Web.Operations;
 
 /// <summary>
 /// Search weather forecasts.

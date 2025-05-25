@@ -1,14 +1,13 @@
-using FluentValidation;
 using Microsoft.AspNetCore.Http.HttpResults;
-using Web.Handlers;
 using Web.Models;
 using Web.Models.Validators;
+using Web.Operations;
 
 namespace Web.Tests.Unit;
 
 public class GetWeatherForecastHandlerTests
 {
-    private readonly IValidator<GetWeather> _validator = new GetWeatherForecastValidator();
+    private readonly GetWeatherForecastValidator _validator = new();
     private readonly GetWeatherHandler sut;
 
     public GetWeatherForecastHandlerTests()

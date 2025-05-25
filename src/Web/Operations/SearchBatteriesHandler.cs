@@ -2,7 +2,7 @@
 using Web.Data;
 using Web.Models;
 
-namespace Web.APIs;
+namespace Web.Operations;
 
 /// <summary>
 /// Handles searches for batteries.

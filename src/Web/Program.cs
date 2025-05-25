@@ -1,14 +1,11 @@
 using Asp.Versioning;
-using Asp.Versioning.Conventions;
-using FluentValidation;
-using Microsoft.AspNetCore.HttpLogging;
 using Serilog;
 using System.Diagnostics;
-using System.Threading.RateLimiting;
-using Web.APIs.Groups;
+using Web.APIs;
 using Web.Data;
-using Web.Handlers;
 using Web.Health;
+using Web.Models;
+using Web.Operations;
 
 namespace Web;
 
@@ -17,8 +14,6 @@ namespace Web;
 /// </summary>
 public class Program
 {
-    private const string RateLimitertPolicyName = "default";
-
     private static void Main(string[] args)
     {
         var builder = WebApplication.CreateBuilder(args);
@@ -28,11 +23,7 @@ public class Program
             Serilog.Debugging.SelfLog.Enable(msg => Debug.WriteLine(msg));
         }
 
-        builder.Services
-            .AddSerilog((services, loggerConfiguration) =>
-            loggerConfiguration.ReadFrom.Configuration(builder.Configuration));
-
-        builder.Services.AddHttpContextAccessor();
+        builder.AddLogging();
 
         builder.Services
             .AddApiVersioning(options =>
@@ -67,87 +58,26 @@ public class Program
             });
         });
 
-        builder.Services.AddHttpLogging(options =>
-        {
-            options.CombineLogs = true;
-        });
-
         builder.Services.AddMemoryCache();
-
         builder.Services.AddApplicationHealthChecks();
-
         builder.Services.AddHttpClient();
-        builder.Services.AddMediatR(configuration => configuration.RegisterServicesFromAssemblyContaining<SearchWeatherHandler>());
-        builder.Services.AddValidatorsFromAssemblyContaining<Program>();
 
-        builder.Services.AddRateLimiter(limiterOptions =>
-        {
-            var myOptions = builder.Configuration.GetValue(MyRateLimitOptions.ConfigurationSection, new MyRateLimitOptions());
-
-            limiterOptions.RejectionStatusCode = StatusCodes.Status429TooManyRequests;
-            limiterOptions.AddPolicy(
-                policyName: RateLimitertPolicyName,
-                partitioner: httpContext =>
-                {
-                    return RateLimitPartition.GetTokenBucketLimiter("Anon", _ =>
-                        new TokenBucketRateLimiterOptions
-                        {
-                            TokenLimit = myOptions.TokenLimit,
-                            QueueProcessingOrder = QueueProcessingOrder.OldestFirst,
-                            QueueLimit = myOptions.QueueLimit,
-                            ReplenishmentPeriod = TimeSpan.FromSeconds(myOptions.ReplenishmentPeriod),
-                            TokensPerPeriod = myOptions.TokensPerPeriod,
-                            AutoReplenishment = true
-                        });
-                });
-        });
-
-        builder.Services.AddRepositories();
+        builder.AddModels();
+        builder.AddRepositories();
+        builder.AddOperations();
+        builder.AddRateLimits();
+        builder.AddAPI();
 
         var app = builder.Build();
 
-        app.UseSerilogRequestLogging();
-        app.UseHttpLogging();
+        app.AddLogging();
         app.UseHttpsRedirection();
         //app.UseExceptionHandler();
         //app.UseAuthorization();
 
         app.UseRateLimiter();
 
-        var versionSet = app
-            .NewApiVersionSet()
-            .HasApiVersion(2)
-            .HasDeprecatedApiVersion(1)
-            .ReportApiVersions()
-            .Build();
-
-        var apiGroup = app
-            .MapGroup("/product/v{version:apiVersion}")
-            .RequireRateLimiting(RateLimitertPolicyName);
-
-        apiGroup
-            .MapGroup("/batteries")
-            .WithTags("Batteries")
-            .WithHttpLogging(HttpLoggingFields.All)
-            .MapBatteryApi()
-            .WithApiVersionSet(versionSet)
-            .MapToApiVersion(2);
-
-        apiGroup
-            .MapGroup("batteries/{name}/images")
-            .WithTags("Images")
-            .WithHttpLogging(HttpLoggingFields.All)
-            .WithApiVersionSet(versionSet)
-            .MapToApiVersion(2)
-            .MapBatteryImageApi();
-
-        apiGroup
-            .MapGroup("/weather")
-            .WithTags("Weather")
-            .WithHttpLogging(HttpLoggingFields.All)
-            .MapWeatherApi()
-            .WithApiVersionSet(versionSet)
-            .MapToApiVersion(1);
+        app.AddAPI();
 
         app.MapProductHealthChecks();
 

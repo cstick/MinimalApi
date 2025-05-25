@@ -8,11 +8,11 @@ public static class DataServiceCollectionExtensions
     /// <summary>
     /// Add respositories to services.
     /// </summary>
-    public static IServiceCollection AddRepositories(this IServiceCollection services)
+    public static WebApplicationBuilder AddRepositories(this WebApplicationBuilder app)
     {
-        services.AddTransient<IBatteryRepository, BatteryRepository>();
-        services.AddTransient<IImageRepository, ImageRepository>();
+        app.Services.AddTransient<IBatteryRepository, BatteryRepository>();
+        app.Services.AddTransient<IImageRepository, ImageRepository>();
 
-        return services;
+        return app;
     }
 }

@@ -1,7 +1,7 @@
 ﻿using FluentValidation;
 using Web.Models.Validators;
 
-namespace Web.APIs;
+namespace Web.Operations;
 
 /// <summary>
 /// Validates a command to replace a battery.

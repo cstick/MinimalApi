@@ -1,6 +1,6 @@
 ﻿using MediatR;
 
-namespace Web.APIs;
+namespace Web.Operations;
 
 /// <summary>
 /// Command to get a battery by name.

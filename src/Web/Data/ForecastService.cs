@@ -18,8 +18,6 @@ public class ForecastService : IForecastService
     /// <inheritdoc/>
     public WeatherForecast? Find(Guid id)
     {
-        ArgumentNullException.ThrowIfNull(id);
-
         return forecasts.FirstOrDefault(forecast => Equals(id, forecast.Id));
     }
 
