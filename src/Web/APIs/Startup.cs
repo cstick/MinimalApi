@@ -1,3 +1,4 @@
+using Asp.Versioning;
 using Asp.Versioning.Conventions;
 using Microsoft.AspNetCore.HttpLogging;
 using Web.APIs.Groups;
@@ -10,14 +11,30 @@ internal static class Startup
     /// <summary>
     /// Add API dependencies.
     /// </summary>
-    /// <param name="app"></param>
+    /// <param name="builder"></param>
     /// <returns></returns>
-    public static WebApplicationBuilder AddAPI(this WebApplicationBuilder app)
+    public static WebApplicationBuilder AddAPI(this WebApplicationBuilder builder)
     {
-        app.Services.AddTransient<PutBatteryValidator>();
-        app.Services.AddTransient<CreateBatteryRequestHandler>();
+        builder.Services
+            .AddApiVersioning(options =>
+            {
+                options.DefaultApiVersion = new ApiVersion(2);
+                options.ReportApiVersions = true;
+                options.ApiVersionReader = new UrlSegmentApiVersionReader();
+            })
+            .AddApiExplorer(options =>
+            {
+                options.DefaultApiVersion = new(2);
+                options.AssumeDefaultVersionWhenUnspecified = true;
+                options.SubstituteApiVersionInUrl = true;
+                options.GroupNameFormat = "'v'VVV";
 
-        return app;
+            });
+
+        builder.Services.AddTransient<PutBatteryValidator>();
+        builder.Services.AddTransient<CreateBatteryRequestHandler>();
+
+        return builder;
     }
 
     /// <summary>
@@ -26,7 +43,7 @@ internal static class Startup
     /// <param name="app"></param>
     /// <param name="configure"></param>
     /// <returns></returns>
-    public static IEndpointRouteBuilder AddAPI(
+    public static IEndpointRouteBuilder MapAPI(
         this WebApplication app,
         Action<APIConfiguration>? configure = default)
     {
