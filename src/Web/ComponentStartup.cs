@@ -2,6 +2,7 @@ using Serilog;
 using System.Diagnostics;
 using System.Threading.RateLimiting;
 using Web.Configurations;
+using Web.Swagger;
 
 namespace Web;
 
@@ -86,6 +87,9 @@ internal static class ComponentStartup
                 Title = "Product",
                 Description = "An API created to becaome familiar with miminal APIs."
             });
+
+            // Ensure deprecated ApiDescriptions are reflected in OpenAPI
+            setup.OperationFilter<DeprecatedOperationFilter>();
         });
 
         return builder;

@@ -39,19 +39,17 @@ internal static class WeatherApis
                 [FromBody] SearchWeather searchCriteria,
                 CancellationToken cancellationToken) =>
                 handler.Send(searchCriteria, cancellationToken))
-            .WithName("search")
-            .WithOpenApi();
+            .WithName("search");
 
         group
             .MapPost("/deprecated", ([FromBody] SearchWeather searchCriteria) => searchCriteria.Name)
             .WithName("deprecated")
-            .WithOpenApi(operation =>
+            .AddOpenApiOperationTransformer((operation, context, token) =>
             {
                 operation.Deprecated = true;
-                return operation;
+                operation.Description = "ASDF";
+                return Task.CompletedTask;
             });
-
-        group.WithOpenApi();
 
         return group;
     }

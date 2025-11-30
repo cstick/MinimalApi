@@ -44,7 +44,9 @@ internal class Program
 
         app.MapProductHealthChecks();
 
-        if (app.Environment.IsDevelopment())
+        // Allow enabling Swagger via configuration (fallback to Development)
+        var enableSwagger = builder.Configuration.GetValue<bool>("EnableSwagger", app.Environment.IsDevelopment());
+        if (enableSwagger)
         {
             app.MapSwagger();
         }

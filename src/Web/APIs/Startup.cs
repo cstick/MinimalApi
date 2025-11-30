@@ -31,6 +31,8 @@ internal static class Startup
 
             });
 
+        builder.Services.AddOpenApi();
+
         builder.Services.AddTransient<PutBatteryValidator>();
         builder.Services.AddTransient<CreateBatteryRequestHandler>();
 
