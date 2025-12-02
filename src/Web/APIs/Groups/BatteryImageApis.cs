@@ -79,8 +79,6 @@ internal static partial class BatteryImageApis
             .WithSummary("Get battery image.")
             .WithDescription("Get a battery image.");
 
-        group.WithOpenApi();
-
         return group;
     }
 }

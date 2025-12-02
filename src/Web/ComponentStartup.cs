@@ -1,8 +1,8 @@
 using Serilog;
 using System.Diagnostics;
 using System.Threading.RateLimiting;
+using Web.APIs;
 using Web.Configurations;
-using Web.Swagger;
 
 namespace Web;
 

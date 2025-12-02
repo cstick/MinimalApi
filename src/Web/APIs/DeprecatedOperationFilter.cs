@@ -2,7 +2,7 @@ using Microsoft.AspNetCore.Mvc.ApiExplorer;
 using Microsoft.OpenApi;
 using Swashbuckle.AspNetCore.SwaggerGen;
 
-namespace Web.Swagger;
+namespace Web.APIs;
 
 internal sealed class DeprecatedOperationFilter : IOperationFilter
 {

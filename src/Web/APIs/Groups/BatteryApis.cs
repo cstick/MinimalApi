@@ -51,8 +51,6 @@ internal static partial class BatteryApis
             .WithDescription("Delete a battery with a given name.")
             .WithName(EndpointNames.Batteries.Delete);
 
-        group.WithOpenApi();
-
         return group;
     }
 }
